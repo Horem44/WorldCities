@@ -15,12 +15,10 @@ namespace WorldCities.Core.Domain.RepositoryContracts
 
         Task delete(T entity);
 
-        Task<List<T>> all();
+        Task<List<T>?> all();
 
-        Task<int> count();
+        Task<List<T>?> getWhere(Expression<Func<T, bool>> predicate);
 
-        Task<List<T>> getWhere(Expression<Func<T, bool>> predicate);
-
-        Task<T> getByGuid(Guid guid);
+        Task<T?> getByGuid(Guid guid);
     }
 }
