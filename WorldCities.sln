@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldCities.Api", "WorldCities.Api\WorldCities.Api.csproj", "{24A8A311-D17E-469E-B0CA-05F57BCA1E8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorldCities.Api", "WorldCities.Api\WorldCities.Api.csproj", "{24A8A311-D17E-469E-B0CA-05F57BCA1E8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldCities.Core", "WorldCities.Core\WorldCities.Core.csproj", "{C51C28AC-B245-4D08-A5F1-1731F1D2B40D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorldCities.Core", "WorldCities.Core\WorldCities.Core.csproj", "{C51C28AC-B245-4D08-A5F1-1731F1D2B40D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldCities.Infrastructure", "WorldCities.Infrastructure\WorldCities.Infrastructure.csproj", "{EFC50987-A1AE-48AC-915A-177F7AE2827B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorldCities.Infrastructure", "WorldCities.Infrastructure\WorldCities.Infrastructure.csproj", "{EFC50987-A1AE-48AC-915A-177F7AE2827B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
