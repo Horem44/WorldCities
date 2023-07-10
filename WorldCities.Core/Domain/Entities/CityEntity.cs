@@ -10,7 +10,7 @@ using System.Diagnostics.Metrics;
 namespace WorldCities.Core.Domain.Entities
 {
     [Table("Cities")]
-    public class CityEntity
+    public class City
     {
         [Key]
         [Required]
@@ -27,7 +27,7 @@ namespace WorldCities.Core.Domain.Entities
         [Index(nameof(Lon))]
         public decimal Lon { get; set; }
 
-        [ForeignKey(nameof(CountryEntity))]
+        [ForeignKey(nameof(Country))]
         public Guid CountryGuid { get; set; }
     }
 }

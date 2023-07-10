@@ -9,21 +9,21 @@ using System.Threading.Tasks;
 namespace WorldCities.Core.Domain.Entities
 {
     [Table("Countries")]
-    [Index(nameof(Name))]
-    [Index(nameof(ISO2))]
-    [Index(nameof(ISO3))]
-    public class CountryEntity
+    public class Country
     {
         [Key]
         [Required]
         public Guid Guid { get; set; }
 
+        [Index(nameof(Name))]
         public string Name { get; set; } = null!;
 
+        [Index(nameof(ISO2))]
         public string ISO2 { get; set; } = null!;
 
+        [Index(nameof(ISO3))]
         public string ISO3 { get; set; } = null!;
 
-        public ICollection<CityEntity>? Cities { get; set; } = null!;
+        public ICollection<City>? Cities { get; set; } = null!;
     }
 }
