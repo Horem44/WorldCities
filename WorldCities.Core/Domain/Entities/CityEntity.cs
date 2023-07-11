@@ -29,5 +29,7 @@ namespace WorldCities.Core.Domain.Entities
 
         [ForeignKey(nameof(Country))]
         public Guid CountryGuid { get; set; }
+
+        public virtual Country Country { get; set; }
     }
 }

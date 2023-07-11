@@ -8,13 +8,23 @@ namespace WorldCities.Core.DTO.Cities.Responses
         public string CityName { get; set; }
         public decimal Lat { get; set; }
         public decimal Lon { get; set; }
+        public Guid CountryGuid { get; set; }
+        public string CountryName { get; set; }
     }
 
     public static class CityExtensions
     {
         public static CityResponse ToCityResponse(this City city)
         {
-            return new CityResponse() { CityGuid = city.Guid, CityName = city.Name, Lat = city.Lat, Lon = city.Lon };
+            return new CityResponse() 
+            { 
+                CityGuid = city.Guid, 
+                CityName = city.Name, 
+                Lat = city.Lat, 
+                Lon = city.Lon, 
+                CountryGuid = city.Country.Guid,
+                CountryName = city.Country.Name,
+            };
         }
     }
 }

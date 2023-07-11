@@ -16,7 +16,7 @@ namespace WorldCities.Infrastructure.Repositories
             _dbSet = db.Set<T>();
         }
 
-        public async Task<T> add(T entity)
+        public virtual async Task<T> add(T entity)
         {
             await _dbSet.AddAsync(entity);
             await _db.SaveChangesAsync();
@@ -24,20 +24,20 @@ namespace WorldCities.Infrastructure.Repositories
             return entity;
         }
 
-        public async Task<List<T>?> all()
+        public virtual async Task<List<T>?> all()
         {
             List<T>? allEntities = await _dbSet.ToListAsync();
 
             return allEntities;
         }
 
-        public async Task delete(T entity)
+        public virtual async Task delete(T entity)
         {
             _dbSet.Remove(entity);
             await _db.SaveChangesAsync();
         }
 
-        public async Task<T?> getByGuid(Guid? guid)
+        public virtual async Task<T?> getByGuid(Guid? guid)
         {
             T? entity = await _dbSet.FindAsync(guid);
 
