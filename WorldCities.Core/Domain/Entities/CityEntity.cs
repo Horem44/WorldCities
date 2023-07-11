@@ -16,6 +16,7 @@ namespace WorldCities.Core.Domain.Entities
         [Required]
         public Guid Guid { get; set; }
 
+        [Column(TypeName = "varchar(32)")]
         [Index(nameof(Name))]
         public string Name { get; set; } = null!;
 

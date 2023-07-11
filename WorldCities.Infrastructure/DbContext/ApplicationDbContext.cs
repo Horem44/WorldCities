@@ -21,5 +21,6 @@ namespace WorldCities.Infrastructure.ApplicationDatabaseContext
 
         public DbSet<City> Cities => Set<City>();
         public DbSet<Country> Countries => Set<Country>();
+        public DbSet<CityImage> CitiesImages { get; set; }
     }
 }

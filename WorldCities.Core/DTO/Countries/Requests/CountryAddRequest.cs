@@ -9,11 +9,5 @@ namespace WorldCities.Core.DTO.Countries.Requests
 
         [Required]
         public string Name { get; set; }
-
-        [Required]
-        public string ISO2 { get; set; }
-
-        [Required]
-        public string ISO3 { get; set; }
     }
 }

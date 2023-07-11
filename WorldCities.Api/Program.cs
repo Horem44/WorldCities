@@ -1,11 +1,17 @@
 using Microsoft.EntityFrameworkCore;
 using WorldCities.Api.Middlewares.ICMPHealthCheck;
 using WorldCities.Api.Options;
+using WorldCities.Core.Domain.RepositoryContracts.CityImageRepositoryContract;
 using WorldCities.Core.Domain.RepositoryContracts.CityRepositoryContract;
+using WorldCities.Core.Domain.RepositoryContracts.CountryRepositoryContract;
+using WorldCities.Core.ServiceContracts.CityImageServiceContracts;
 using WorldCities.Core.ServiceContracts.CityServiceContracts;
+using WorldCities.Core.Services.CityImageServices;
 using WorldCities.Core.Services.CityServices;
 using WorldCities.Infrastructure.ApplicationDatabaseContext;
+using WorldCities.Infrastructure.Repositories.CitiesImagesRepository;
 using WorldCities.Infrastructure.Repositories.CitiesRepository;
+using WorldCities.Infrastructure.Repositories.CountriesRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,8 +20,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
 );
 
 builder.Services.AddScoped<ICityRepository, CitiesRepository>();
+builder.Services.AddScoped<ICountryRepository, CountriesRepository>();
+builder.Services.AddScoped<ICityImageRepository, CitiesImagesRepository>();
+
 builder.Services.AddScoped<ICitiesGetterService, CitiesGetterService>();
 builder.Services.AddScoped<ICitiesAdderService, CitiesAdderService>();
+
+builder.Services.AddScoped<ICityImageAdderService, CityImageAdderService>();
+builder.Services.AddScoped<ICityImageGetterService, CityImageGetterService>();
 
 builder.Services.AddCors(options =>
 {

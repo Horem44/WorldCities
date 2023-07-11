@@ -8,16 +8,13 @@ using System.Threading.Tasks;
 
 namespace WorldCities.Core.Domain.Entities
 {
-    [Table("Countries")]
-    public class Country
+    [Table("CitiesImages")]
+    public class CityImage
     {
         [Key]
-        [Required]
         public Guid Guid { get; set; }
-
-        [Index(nameof(Name))]
-        public string Name { get; set; } = null!;
-
-        public ICollection<City>? Cities { get; set; } = null!;
+        public string FileName { get; set; }
+        public string ContentType { get; set; }
+        public byte[] FileData { get; set; }
     }
 }

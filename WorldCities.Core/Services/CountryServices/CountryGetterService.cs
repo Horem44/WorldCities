@@ -1,13 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using WorldCities.Core.Domain.Entities;
+using WorldCities.Core.Domain.RepositoryContracts.CountryRepositoryContract;
+using WorldCities.Core.DTO.Countries.Responses;
+using WorldCities.Core.ServiceContracts.CountryServiceContracts;
 
-namespace WorldCities.Core.Services.Country
+namespace WorldCities.Core.Services.CountryServices
 {
-    public class CountryGetterService
+    public class CountryGetterService : ICountryGetterService
     {
+        private readonly ICountryRepository _countryRepository;
+
+        public CountryGetterService(ICountryRepository countryRepository)
+        {
+            _countryRepository = countryRepository;
+        }
 
     }
 }

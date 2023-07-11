@@ -15,11 +15,11 @@ namespace WorldCities.Core.DTO.Cities.Requests
         public decimal Lon { get; set; }
 
         [Required]
-        public Guid CountryGuid { get; set; }
+        public string CountryName { get; set; }
 
         public City ToCity()
         {
-            return new City { Name = Name, Lat = Lat, Lon = Lon, CountryGuid = CountryGuid };
+            return new City { Name = Name, Lat = Lat, Lon = Lon, CountryGuid = Guid.NewGuid() };
         }
     }
 }
