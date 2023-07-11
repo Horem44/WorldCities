@@ -19,6 +19,6 @@ namespace WorldCities.Core.Domain.RepositoryContracts
 
         Task<List<T>?> getWhere(Expression<Func<T, bool>> predicate);
 
-        Task<T?> getByGuid(Guid guid);
+        Task<T?> getByGuid(Guid? guid);
     }
 }

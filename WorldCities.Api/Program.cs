@@ -1,13 +1,21 @@
 using Microsoft.EntityFrameworkCore;
 using WorldCities.Api.Middlewares.ICMPHealthCheck;
 using WorldCities.Api.Options;
+using WorldCities.Core.Domain.RepositoryContracts.CityRepositoryContract;
+using WorldCities.Core.ServiceContracts.CityServiceContracts;
+using WorldCities.Core.Services.CityServices;
 using WorldCities.Infrastructure.ApplicationDatabaseContext;
+using WorldCities.Infrastructure.Repositories.CitiesRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<ApplicationDbContext>(option => 
+builder.Services.AddDbContext<ApplicationDbContext>(option =>
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+
+builder.Services.AddScoped<ICityRepository, CitiesRepository>();
+builder.Services.AddScoped<ICitiesGetterService, CitiesGetterService>();
+builder.Services.AddScoped<ICitiesAdderService, CitiesAdderService>();
 
 builder.Services.AddCors(options =>
 {
@@ -20,7 +28,12 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddHealthChecks().AddICMPHealthCheck(300, "127.0.0.1");
-builder.Services.AddControllers();
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.WriteIndented = true;
+    });
 
 var app = builder.Build();
 

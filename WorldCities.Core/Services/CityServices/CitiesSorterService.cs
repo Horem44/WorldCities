@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WorldCities.Core.Services.CitiesServices
+namespace WorldCities.Core.Services.CityServices
 {
-    internal class CitiesAdderService
+    internal class CitiesSorterService
     {
     }
 }

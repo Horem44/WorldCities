@@ -37,7 +37,7 @@ namespace WorldCities.Infrastructure.Repositories
             await _db.SaveChangesAsync();
         }
 
-        public async Task<T?> getByGuid(Guid guid)
+        public async Task<T?> getByGuid(Guid? guid)
         {
             T? entity = await _dbSet.FindAsync(guid);
 

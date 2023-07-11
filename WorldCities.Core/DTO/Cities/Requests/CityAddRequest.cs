@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using WorldCities.Core.Domain.Entities;
 
 namespace WorldCities.Core.DTO.Cities.Requests
 {
@@ -20,6 +15,11 @@ namespace WorldCities.Core.DTO.Cities.Requests
         public decimal Lon { get; set; }
 
         [Required]
-        public Guid CountryGuid {  get; set; }
+        public Guid CountryGuid { get; set; }
+
+        public City ToCity()
+        {
+            return new City { Name = Name, Lat = Lat, Lon = Lon, CountryGuid = CountryGuid };
+        }
     }
 }
