@@ -49,7 +49,7 @@ namespace WorldCities.Api.Controllers
 
         [HttpPost]
         [Route("")]
-        public async Task<IActionResult> addCity(CityAddRequest cityAddRequest)
+        public async Task<IActionResult> addCity([FromForm] CityAddRequest cityAddRequest)
         {
             CityResponse? city = await _cityAdderService.addCity(cityAddRequest);
             return new JsonResult(city);
@@ -68,7 +68,7 @@ namespace WorldCities.Api.Controllers
         [Route("image")]
         public async Task<IActionResult> UploadCityImage([FromForm] IFormFile image)
         {
-            Guid imageGuid = await _cityImageAdderService.UploadCityImage(image);
+            Guid? imageGuid = await _cityImageAdderService.UploadCityImage(image);
             return new JsonResult(imageGuid);
         }
     }

@@ -4,6 +4,6 @@ namespace WorldCities.Core.ServiceContracts.CityImageServiceContracts
 {
     public interface ICityImageAdderService
     {
-        Task<Guid> UploadCityImage(IFormFile image);
+        Task<Guid?> UploadCityImage(IFormFile image);
     }
 }

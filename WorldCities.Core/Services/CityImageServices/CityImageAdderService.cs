@@ -14,13 +14,28 @@ namespace WorldCities.Core.Services.CityImageServices
             _cityImageRepository = cityImageRepository;
         }
 
-        public async Task<Guid> UploadCityImage(IFormFile image)
+        public async Task<Guid?> UploadCityImage(IFormFile image)
         {
+            if (image == null || image.Length == 0)
+            {
+                return null;
+            }
 
+            CityImage imageEntity = new CityImage()
+            {
+                FileName = image.FileName,
+                ContentType = image.ContentType
+            };
 
-            await _cityImageRepository.add(image);
+            using (var memoryStream = new MemoryStream())
+            {
+                await image.CopyToAsync(memoryStream);
+                imageEntity.FileData = memoryStream.ToArray();
+            }
 
-            return image.Guid;
+            await _cityImageRepository.add(imageEntity);
+
+            return imageEntity.Guid;
         }
     }
 }

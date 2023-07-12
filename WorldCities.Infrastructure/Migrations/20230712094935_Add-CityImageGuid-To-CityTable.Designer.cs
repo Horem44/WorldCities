@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorldCities.Infrastructure.ApplicationDatabaseContext;
 
@@ -11,9 +12,11 @@ using WorldCities.Infrastructure.ApplicationDatabaseContext;
 namespace WorldCities.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230712094935_Add-CityImageGuid-To-CityTable")]
+    partial class AddCityImageGuidToCityTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,7 +31,7 @@ namespace WorldCities.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CityImageGuid")
+                    b.Property<Guid>("CityImageGuid")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CountryGuid")

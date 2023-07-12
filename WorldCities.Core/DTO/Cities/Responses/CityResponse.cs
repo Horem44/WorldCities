@@ -10,6 +10,8 @@ namespace WorldCities.Core.DTO.Cities.Responses
         public decimal Lon { get; set; }
         public Guid CountryGuid { get; set; }
         public string CountryName { get; set; }
+
+        public Guid? CityImageGuid { get; set; }
     }
 
     public static class CityExtensions
@@ -24,6 +26,7 @@ namespace WorldCities.Core.DTO.Cities.Responses
                 Lon = city.Lon, 
                 CountryGuid = city.Country.Guid,
                 CountryName = city.Country.Name,
+                CityImageGuid = city.CityImageGuid
             };
         }
     }

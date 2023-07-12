@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 using WorldCities.Core.Domain.Entities;
 
 namespace WorldCities.Core.DTO.Cities.Requests
@@ -16,6 +17,9 @@ namespace WorldCities.Core.DTO.Cities.Requests
 
         [Required]
         public string CountryName { get; set; }
+
+        [Required]
+        public IFormFile File { get; set; }
 
         public City ToCity()
         {
