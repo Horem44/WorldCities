@@ -61,7 +61,7 @@ namespace WorldCities.Api.Controllers
         {
             CityImage? image = await _cityImageGetterService.getFileByGuid(guid);
             var imageStream = new MemoryStream(image.FileData);
-            return File(imageStream, image.ContentType);
+            return new FileStreamResult(imageStream, image.ContentType);
         }
 
         [HttpPost]
