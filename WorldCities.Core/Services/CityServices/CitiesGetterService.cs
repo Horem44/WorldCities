@@ -50,8 +50,10 @@ namespace WorldCities.Core.Services.CityServices
 
         public async Task<List<CityResponse>> GetUserCities(string userId)
         {
-            ApplicationUser? user = _userManager.Users
-                .Include(u => u.Cities).FirstOrDefault(u => u.Id == Guid.Parse(userId));
+            ApplicationUser? user = await _userManager.Users
+                .Include(u => u.Cities)
+                .ThenInclude(c => c.Country)
+                .FirstOrDefaultAsync(u => u.Id == Guid.Parse(userId));
 
             if (user != null && user.Cities != null)
             {
