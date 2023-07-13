@@ -14,7 +14,7 @@ namespace WorldCities.Core.Services.CityImageServices
             _cityImageRepository = cityImageRepository;
         }
 
-        public async Task<Guid?> UploadCityImage(IFormFile image)
+        public async Task<Guid?> UploadCityImage(IFormFile image, Guid cityGuid)
         {
             if (image == null || image.Length == 0)
             {
@@ -23,6 +23,7 @@ namespace WorldCities.Core.Services.CityImageServices
 
             CityImage imageEntity = new CityImage()
             {
+                CityGuid = cityGuid,
                 FileName = image.FileName,
                 ContentType = image.ContentType
             };

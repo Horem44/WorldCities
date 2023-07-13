@@ -23,7 +23,7 @@ namespace WorldCities.Core.DTO.Cities.Requests
 
         public City ToCity()
         {
-            return new City { Name = Name, Lat = Lat, Lon = Lon, CountryGuid = Guid.NewGuid() };
+            return new City { Name = Name, Lat = Lat, Lon = Lon };
         }
     }
 }

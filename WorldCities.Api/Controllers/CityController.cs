@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using WorldCities.Core.Domain.Entities;
 using WorldCities.Core.DTO.Cities.Requests;
 using WorldCities.Core.DTO.Cities.Responses;
@@ -15,27 +17,26 @@ namespace WorldCities.Api.Controllers
         private readonly ICitiesAdderService _cityAdderService;
 
         private readonly ICityImageGetterService _cityImageGetterService;
-        private readonly ICityImageAdderService _cityImageAdderService;
 
         public CityController
             (
                 ICitiesGetterService cityGetterService,
                 ICitiesAdderService cityAdderService,
-                ICityImageGetterService cityImageGetterService,
-                ICityImageAdderService cityImageAdderService
+                ICityImageGetterService cityImageGetterService
             )
         {
             _cityGetterService = cityGetterService;
             _cityAdderService = cityAdderService;
             _cityImageGetterService = cityImageGetterService;
-            _cityImageAdderService = cityImageAdderService;
         }
 
         [HttpGet]
+        [Authorize]
         [Route("")]
-        public async Task<IActionResult> getAllCities()
+        public async Task<IActionResult> getUserCities()
         {
-            List<CityResponse>? allCities = await _cityGetterService.getAllCities();
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            List<CityResponse>? allCities = await _cityGetterService.GetUserCities(userId);
             return new JsonResult(allCities);
         }
 
@@ -48,10 +49,12 @@ namespace WorldCities.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route("")]
         public async Task<IActionResult> addCity([FromForm] CityAddRequest cityAddRequest)
         {
-            CityResponse? city = await _cityAdderService.addCity(cityAddRequest);
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            CityResponse? city = await _cityAdderService.addCity(cityAddRequest, userId);
             return new JsonResult(city);
         }
 
@@ -62,14 +65,6 @@ namespace WorldCities.Api.Controllers
             CityImage? image = await _cityImageGetterService.getFileByGuid(guid);
             var imageStream = new MemoryStream(image.FileData);
             return new FileStreamResult(imageStream, image.ContentType);
-        }
-
-        [HttpPost]
-        [Route("image")]
-        public async Task<IActionResult> UploadCityImage([FromForm] IFormFile image)
-        {
-            Guid? imageGuid = await _cityImageAdderService.UploadCityImage(image);
-            return new JsonResult(imageGuid);
         }
     }
 }
