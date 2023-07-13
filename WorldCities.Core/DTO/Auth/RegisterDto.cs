@@ -11,7 +11,7 @@ namespace WorldCities.Core.DTO.Auth
     public class RegisterDto
     {
         [Required]
-        public string UserName { get; set; } = string.Empty;
+        public string PersonName { get; set; } = string.Empty;
 
         [Required]
         [EmailAddress]

@@ -23,7 +23,7 @@ namespace WorldCities.Core.Services.Auth
             _configuration = configuration;
         }
 
-        public LoginResponse CreateJwtToken(ApplicationUser user)
+        public AuthResponse CreateJwtToken(ApplicationUser user)
         {
             DateTime expiration = DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["Jwt:EXPIRATION_MINUTES"]));
 
@@ -60,8 +60,9 @@ namespace WorldCities.Core.Services.Auth
 
             string jwtToken = jwtSecurityTokenHandler.WriteToken(tokenGenerator);
 
-            return new LoginResponse()
+            return new AuthResponse()
             { 
+                UserId = user.Id,
                 Token = jwtToken,
                 Email = user.Email,
                 PersonName = user.PersonName,

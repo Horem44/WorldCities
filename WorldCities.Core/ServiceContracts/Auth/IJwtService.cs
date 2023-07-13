@@ -10,6 +10,6 @@ namespace WorldCities.Core.ServiceContracts.Auth
 {
     public interface IJwtService
     {
-        public LoginResponse CreateJwtToken(ApplicationUser user);
+        public AuthResponse CreateJwtToken(ApplicationUser user);
     }
 }

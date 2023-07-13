@@ -35,7 +35,7 @@ namespace WorldCities.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<LoginResponse>> Register(RegisterDto registerDto)
+        public async Task<ActionResult<AuthResponse>> Register(RegisterDto registerDto)
         {
             if (!ModelState.IsValid)
             {
@@ -47,7 +47,8 @@ namespace WorldCities.Api.Controllers
 
             ApplicationUser user = new ApplicationUser()
             {
-                UserName = registerDto.UserName,
+                UserName = registerDto.Email,
+                PersonName = registerDto.PersonName,
                 Email = registerDto.Email,
             };
 
@@ -57,7 +58,7 @@ namespace WorldCities.Api.Controllers
             {
                 await _signInManager.SignInAsync(user, isPersistent: false);
 
-                LoginResponse authenticationResponse = _jwtService.CreateJwtToken(user);
+                AuthResponse authenticationResponse = _jwtService.CreateJwtToken(user);
 
                 return Ok(authenticationResponse);
             }
@@ -108,7 +109,7 @@ namespace WorldCities.Api.Controllers
                     return NoContent();
                 }
 
-                LoginResponse authenticationResponse = _jwtService.CreateJwtToken(user);
+                AuthResponse authenticationResponse = _jwtService.CreateJwtToken(user);
 
                 return Ok(authenticationResponse);
             }
