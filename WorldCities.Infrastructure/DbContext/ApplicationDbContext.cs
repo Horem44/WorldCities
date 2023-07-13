@@ -17,6 +17,7 @@ namespace WorldCities.Infrastructure.ApplicationDatabaseContext
 
         public DbSet<City> Cities => Set<City>();
         public DbSet<Country> Countries => Set<Country>();
-        public DbSet<CityImage> CitiesImages { get; set; }
+        public DbSet<CityImage> CitiesImages => Set<CityImage>();
+        public DbSet<Like> Likes => Set<Like>();
     }
 }

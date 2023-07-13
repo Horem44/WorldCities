@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Diagnostics.Metrics;
+using WorldCities.Core.Identity;
 
 namespace WorldCities.Core.Domain.Entities
 {
@@ -35,5 +30,14 @@ namespace WorldCities.Core.Domain.Entities
         public Guid? CityImageGuid { get; set; }
 
         public virtual Country Country { get; set; }
+
+        public virtual CityImage CityImage { get; set; }
+
+        public virtual ICollection<Like> Likes { get; set; }
+
+        public virtual ICollection<ApplicationUser> Users { get; set; }
+
+        [NotMapped] 
+        public int LikesCount => Likes?.Count ?? 0;
     }
 }

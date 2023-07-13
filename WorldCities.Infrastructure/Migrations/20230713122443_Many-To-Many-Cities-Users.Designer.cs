@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorldCities.Infrastructure.ApplicationDatabaseContext;
 
@@ -11,9 +12,11 @@ using WorldCities.Infrastructure.ApplicationDatabaseContext;
 namespace WorldCities.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230713122443_Many-To-Many-Cities-Users")]
+    partial class ManyToManyCitiesUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -164,8 +167,6 @@ namespace WorldCities.Infrastructure.Migrations
 
                     b.HasKey("Guid");
 
-                    b.HasIndex("CityImageGuid");
-
                     b.HasIndex("CountryGuid");
 
                     b.ToTable("Cities");
@@ -175,9 +176,6 @@ namespace WorldCities.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CityGuid")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ContentType")
@@ -193,8 +191,6 @@ namespace WorldCities.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Guid");
-
-                    b.HasIndex("CityGuid");
 
                     b.ToTable("CitiesImages");
                 });
@@ -401,30 +397,13 @@ namespace WorldCities.Infrastructure.Migrations
 
             modelBuilder.Entity("WorldCities.Core.Domain.Entities.City", b =>
                 {
-                    b.HasOne("WorldCities.Core.Domain.Entities.CityImage", "CityImage")
-                        .WithMany()
-                        .HasForeignKey("CityImageGuid");
-
                     b.HasOne("WorldCities.Core.Domain.Entities.Country", "Country")
                         .WithMany("Cities")
                         .HasForeignKey("CountryGuid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("CityImage");
-
                     b.Navigation("Country");
-                });
-
-            modelBuilder.Entity("WorldCities.Core.Domain.Entities.CityImage", b =>
-                {
-                    b.HasOne("WorldCities.Core.Domain.Entities.City", "City")
-                        .WithMany()
-                        .HasForeignKey("CityGuid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("City");
                 });
 
             modelBuilder.Entity("WorldCities.Core.Domain.Entities.Like", b =>

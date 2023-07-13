@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using WorldCities.Core.Domain.Entities;
 
 namespace WorldCities.Core.Identity
 {
     public class ApplicationUser : IdentityUser<Guid>
     {
         public string PersonName { get; set; }
+        public virtual ICollection<Like> Likes { get; set; }
+
+        public virtual ICollection<City> Cities { get; set; }
     }
 }
