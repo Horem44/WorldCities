@@ -1,6 +1,6 @@
 ﻿using WorldCities.Core.Domain.Entities;
 
-namespace WorldCities.Core.DTO.Countries.Responses
+namespace WorldCities.Core.DTO.Countries
 {
     public class CountryResponse
     {

@@ -14,10 +14,10 @@ namespace WorldCities.Core.Domain.Entities
         public Guid Guid { get; set; }
 
         [ForeignKey(nameof(City))]
-        public Guid CityId {  get; set; }
+        public Guid CityGuid {  get; set; }
 
         [ForeignKey(nameof(ApplicationUser))]
-        public Guid UserId { get; set; }
+        public Guid UserGuid { get; set; }
 
         public virtual City City { get; set; }
         public virtual ApplicationUser ApplicationUser { get; set; }

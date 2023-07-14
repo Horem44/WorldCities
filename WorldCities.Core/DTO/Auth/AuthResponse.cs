@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WorldCities.Core.Domain.Entities;
-using WorldCities.Core.DTO.Cities.Responses;
+using WorldCities.Core.DTO.Cities;
 using WorldCities.Core.Identity;
 
 namespace WorldCities.Core.DTO.Auth

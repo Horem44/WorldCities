@@ -2,8 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using WorldCities.Core.Domain.Entities;
-using WorldCities.Core.DTO.Cities.Requests;
-using WorldCities.Core.DTO.Cities.Responses;
+using WorldCities.Core.DTO.Cities;
 using WorldCities.Core.ServiceContracts.CityImageServiceContracts;
 using WorldCities.Core.ServiceContracts.CityServiceContracts;
 
@@ -36,7 +35,15 @@ namespace WorldCities.Api.Controllers
         public async Task<IActionResult> getUserCities()
         {
             string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            List<CityResponse>? allCities = await _cityGetterService.GetUserCities(userId);
+            List<CityResponse>? userCities = await _cityGetterService.GetUserCities(userId);
+            return new JsonResult(userCities);
+        }
+
+        [HttpGet]
+        [Route("all")]
+        public async Task<IActionResult> getAllCities()
+        {
+            List<CityResponse>? allCities = await _cityGetterService.getAllCities();
             return new JsonResult(allCities);
         }
 

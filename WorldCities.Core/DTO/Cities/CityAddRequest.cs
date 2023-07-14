@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using WorldCities.Core.Domain.Entities;
 
-namespace WorldCities.Core.DTO.Cities.Requests
+namespace WorldCities.Core.DTO.Cities
 {
     public class CityAddRequest
     {

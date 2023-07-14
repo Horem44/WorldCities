@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WorldCities.Core.Domain.Entities;
-using WorldCities.Core.DTO.Cities.Responses;
+using WorldCities.Core.DTO.Cities;
 
 namespace WorldCities.Core.ServiceContracts.CityServiceContracts
 {

@@ -17,6 +17,7 @@ namespace WorldCities.Infrastructure.Repositories.CitiesRepository
         {
             List<City>? allCities = await _db.Cities
                 .Include(c => c.Country)
+                .Include(c => c.Likes)
                 .ToListAsync();
 
             return allCities;

@@ -1,6 +1,6 @@
 ﻿using WorldCities.Core.Domain.Entities;
 using WorldCities.Core.Domain.RepositoryContracts.CountryRepositoryContract;
-using WorldCities.Core.DTO.Countries.Responses;
+using WorldCities.Core.DTO.Countries;
 using WorldCities.Core.ServiceContracts.CountryServiceContracts;
 
 namespace WorldCities.Core.Services.CountryServices

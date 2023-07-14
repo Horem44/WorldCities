@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WorldCities.Core.DTO.Countries.Requests
+namespace WorldCities.Core.DTO.Countries
 {
     public class CountryAddRequest
     {

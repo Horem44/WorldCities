@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WorldCities.Core.ServiceContracts.CityServiceContracts
+namespace WorldCities.Core.DTO.Like
 {
-    internal class ICitiesSorterService
+    public class LikeDto
     {
+        public Guid CityGuid { get; set; }
     }
 }

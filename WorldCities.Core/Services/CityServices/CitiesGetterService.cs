@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WorldCities.Core.Domain.Entities;
 using WorldCities.Core.Domain.RepositoryContracts.CityRepositoryContract;
-using WorldCities.Core.DTO.Cities.Responses;
+using WorldCities.Core.DTO.Cities;
 using WorldCities.Core.Identity;
 using WorldCities.Core.ServiceContracts.CityServiceContracts;
 
@@ -53,6 +53,7 @@ namespace WorldCities.Core.Services.CityServices
             ApplicationUser? user = await _userManager.Users
                 .Include(u => u.Cities)
                 .ThenInclude(c => c.Country)
+                .Include(c => c.Likes)
                 .FirstOrDefaultAsync(u => u.Id == Guid.Parse(userId));
 
             if (user != null && user.Cities != null)
