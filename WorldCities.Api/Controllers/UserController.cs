@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WorldCities.Core.DTO.User;
+using WorldCities.Core.ServiceContracts.User;
 
 namespace WorldCities.Api.Controllers
 {
@@ -8,13 +10,20 @@ namespace WorldCities.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        [HttpPost("me")]
-        [Authorize]
-        public IActionResult GetUserId()
-        {
-            var userId = User.FindFirst("sub")?.Value;
+        private readonly IUserService _userService;
 
-            return Ok(new { UserId = userId });
+        public UserController(IUserService userService)
+        {
+            _userService = userService;
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("filter")]
+        public async Task<IActionResult> GetFilteredUsers([FromQuery] string? personName)
+        {
+            List<UserResponse> filteredUsers = await _userService.GetFilteredUsers(personName);
+            return new JsonResult(filteredUsers);
         }
     }
 }

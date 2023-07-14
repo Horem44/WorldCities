@@ -36,5 +36,16 @@ namespace WorldCities.Api.Controllers
             await _likeService.RemoveLike(userGuid, cityGuid);
             return Ok();
         }
+
+        [Route("is-already-liked")]
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> IsCityAlreadyLiked(
+            [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userGuid, Guid cityGuid
+            )
+        {
+            bool isExist = await _likeService.IsAlreadyExists(userGuid, cityGuid);
+            return new JsonResult(new { isLikeExist = isExist });
+        }
     }
 }

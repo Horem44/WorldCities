@@ -16,10 +16,18 @@ namespace WorldCities.Api.Controllers.Broadcast
         {
             _hub = hub;
         }
+
         [HttpGet]
         public async Task<IActionResult> Update()
         {
             await _hub.Clients.All.SendAsync("Update", "test");
+            return Ok("Update message sent.");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ClientUpdate()
+        {
+            await _hub.Clients.All.SendAsync("ClientUpdate", "test");
             return Ok("Update message sent.");
         }
     }

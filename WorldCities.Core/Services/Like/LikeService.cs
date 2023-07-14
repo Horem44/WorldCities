@@ -26,6 +26,12 @@ namespace WorldCities.Core.Services.LikeService
             return like.ToLikeResponse();
         }
 
+        public async Task<bool> IsAlreadyExists(Guid userGuid, Guid cityGuid)
+        {
+            Like existingLike = await _likeRepository.GetByUserCityGuid(userGuid, cityGuid);
+            return existingLike == null ? false : true;
+        }
+
         public async Task RemoveLike(Guid userGuid, Guid cityGuid)
         {
             Like likeToDelete = await _likeRepository.GetByUserCityGuid(userGuid, cityGuid);

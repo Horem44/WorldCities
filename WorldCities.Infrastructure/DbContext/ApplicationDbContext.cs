@@ -19,5 +19,14 @@ namespace WorldCities.Infrastructure.ApplicationDatabaseContext
         public DbSet<Country> Countries => Set<Country>();
         public DbSet<CityImage> CitiesImages => Set<CityImage>();
         public DbSet<Like> Likes => Set<Like>();
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Like>()
+                .HasIndex(l => new { l.CityGuid, l.UserGuid })
+                .IsUnique();
+        }
     }
 }

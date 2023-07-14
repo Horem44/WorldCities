@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace WorldCities.Core.DTO.Like
 {
     public class LikeDto
     {
+        [Required]
         public Guid CityGuid { get; set; }
     }
 }
