@@ -9,5 +9,8 @@ namespace WorldCities.Core.Identity
         public virtual ICollection<Like> Likes { get; set; }
 
         public virtual ICollection<City> Cities { get; set; }
+
+        public virtual ICollection<Country> Countries { get; set; }
+
     }
 }

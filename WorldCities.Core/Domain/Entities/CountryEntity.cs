@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorldCities.Core.Identity;
 
 namespace WorldCities.Core.Domain.Entities
 {
@@ -19,5 +20,10 @@ namespace WorldCities.Core.Domain.Entities
         public string Name { get; set; } = null!;
 
         public ICollection<City>? Cities { get; set; } = null!;
+
+        public virtual ICollection<ApplicationUser> Users { get; set; }
+
+        [NotMapped]
+        public int CitiesCount => Cities?.Count ?? 0;
     }
 }

@@ -14,12 +14,15 @@ using WorldCities.Core.Identity;
 using WorldCities.Core.ServiceContracts.Auth;
 using WorldCities.Core.ServiceContracts.CityImageServiceContracts;
 using WorldCities.Core.ServiceContracts.CityServiceContracts;
+using WorldCities.Core.ServiceContracts.CountryServiceContracts;
 using WorldCities.Core.ServiceContracts.Like;
 using WorldCities.Core.Services.Auth;
 using WorldCities.Core.Services.CityImageServices;
 using WorldCities.Core.Services.CityServices;
+using WorldCities.Core.Services.CountryServices;
 using WorldCities.Core.Services.LikeService;
 using WorldCities.Infrastructure.ApplicationDatabaseContext;
+using WorldCities.Infrastructure.Hubs;
 using WorldCities.Infrastructure.ModelBinders;
 using WorldCities.Infrastructure.Repositories.CitiesImagesRepository;
 using WorldCities.Infrastructure.Repositories.CitiesRepository;
@@ -49,6 +52,8 @@ builder.Services.AddScoped<ICitiesAdderService, CitiesAdderService>();
 builder.Services.AddScoped<ICityImageAdderService, CityImageAdderService>();
 builder.Services.AddScoped<ICityImageGetterService, CityImageGetterService>();
 
+builder.Services.AddScoped<ICountryGetterService, CountryGetterService>();
+
 builder.Services.AddScoped<ILikeService, LikeService>();
 
 builder.Services.AddTransient<IJwtService, JwtService>();
@@ -62,6 +67,8 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader();
     });
 });
+
+builder.Services.AddSignalR();
 
 builder.Services.AddHealthChecks().AddICMPHealthCheck(300, "127.0.0.1");
 
@@ -115,5 +122,7 @@ app.UseAuthorization();
 app.UseHealthChecks(new PathString("/api/health"), new JsonHealthCheckOptions());
 
 app.MapControllers();
+
+app.MapHub<HealthCheckHub>("/api/health-hub");
 
 app.Run();

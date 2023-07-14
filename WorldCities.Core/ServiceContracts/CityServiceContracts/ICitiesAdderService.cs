@@ -4,6 +4,6 @@ namespace WorldCities.Core.ServiceContracts.CityServiceContracts
 {
     public interface ICitiesAdderService
     {
-        Task<CityResponse?> addCity(CityAddRequest city, string? userId);
+        Task<CityResponse?> addCity(CityAddRequest city, Guid? userId);
     }
 }

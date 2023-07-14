@@ -30,7 +30,7 @@ namespace WorldCities.Core.Services.CityServices
             _userManager = userManager;
         }
 
-        public async Task<CityResponse?> addCity(CityAddRequest city, string? userId)
+        public async Task<CityResponse?> addCity(CityAddRequest city, Guid? userId)
         {
             if(userId == null)
             {
@@ -57,7 +57,7 @@ namespace WorldCities.Core.Services.CityServices
 
             cityToAdd.CityImageGuid = await _cityImageAdderService.UploadCityImage(city.File, cityToAdd.Guid);
 
-            ApplicationUser? user = await _userManager.FindByIdAsync(userId);
+            ApplicationUser? user = await _userManager.FindByIdAsync(userId.ToString());
 
             if (user != null)
             {
@@ -68,6 +68,15 @@ namespace WorldCities.Core.Services.CityServices
                 else
                 {
                     user.Cities.Add(cityToAdd);
+                }
+
+                if (user.Countries == null)
+                {
+                    user.Countries = new List<Country> { cityToAdd.Country };
+                }
+                else
+                {
+                    user.Countries.Add(cityToAdd.Country);
                 }
 
                 await _userManager.UpdateAsync(user);

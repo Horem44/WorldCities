@@ -5,6 +5,7 @@ using WorldCities.Core.Domain.Entities;
 using WorldCities.Core.DTO.Cities;
 using WorldCities.Core.ServiceContracts.CityImageServiceContracts;
 using WorldCities.Core.ServiceContracts.CityServiceContracts;
+using WorldCities.Infrastructure.ModelBinders;
 
 namespace WorldCities.Api.Controllers
 {
@@ -58,10 +59,10 @@ namespace WorldCities.Api.Controllers
         [HttpPost]
         [Authorize]
         [Route("")]
-        public async Task<IActionResult> addCity([FromForm] CityAddRequest cityAddRequest)
+        public async Task<IActionResult> addCity(
+            [FromForm] CityAddRequest cityAddRequest, [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userGuid)
         {
-            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            CityResponse? city = await _cityAdderService.addCity(cityAddRequest, userId);
+            CityResponse? city = await _cityAdderService.addCity(cityAddRequest, userGuid);
             return new JsonResult(city);
         }
 

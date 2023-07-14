@@ -10,5 +10,7 @@ namespace WorldCities.Core.Domain.RepositoryContracts.CountryRepositoryContract
     public interface ICountryRepository : IBaseRepository<Country>
     {
         Task<Country?> GetByName(string name);
+
+        Task<List<City>> GetCountryCities(Guid countryGuid);
     }
 }
