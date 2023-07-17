@@ -59,6 +59,8 @@ namespace WorldCities.Core.Services.CityServices
             ApplicationUser? user = await _userManager.Users
                 .Include(u => u.Cities)
                 .ThenInclude(c => c.Country)
+                .Include(u => u.Cities)
+                .ThenInclude(c => c.Likes)
                 .Include(c => c.Likes)
                 .FirstOrDefaultAsync(u => u.Id == Guid.Parse(userId));
 
