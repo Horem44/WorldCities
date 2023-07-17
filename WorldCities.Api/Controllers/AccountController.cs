@@ -3,15 +3,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using WorldCities.Core.Identity;
 using WorldCities.Core.DTO.Auth;
-using Microsoft.Identity.Client;
 using Microsoft.AspNetCore.Mvc;
 using WorldCities.Core.ServiceContracts.Auth;
+using WorldCities.Infrastructure.ModelBinders;
+using WorldCities.Core.DTO.User;
 
 namespace WorldCities.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [AllowAnonymous]
     public class AccountController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -35,6 +35,7 @@ namespace WorldCities.Api.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult<AuthResponse>> Register(RegisterDto registerDto)
         {
             if (!ModelState.IsValid)
@@ -73,6 +74,7 @@ namespace WorldCities.Api.Controllers
 
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> IsEmailAlreadyExists(string email)
         {
             ApplicationUser? user = await _userManager.FindByEmailAsync(email);
@@ -87,6 +89,7 @@ namespace WorldCities.Api.Controllers
 
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult<ApplicationUser>> Login(LoginDto loginDto)
         {
             if (!ModelState.IsValid)
@@ -118,11 +121,30 @@ namespace WorldCities.Api.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
 
             return NoContent();
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> authenticate([ModelBinder(typeof(JwtUserIdModelBinder))] Guid userGuid)
+        {
+            ApplicationUser? user = await _userManager.FindByIdAsync(userGuid.ToString());
+
+            if(user == null)
+            {
+                return Ok(false);
+            }
+
+            await _signInManager.SignInAsync(user, isPersistent: false);
+
+            AuthResponse authenticationResponse = _jwtService.CreateJwtToken(user);
+
+            return Ok(authenticationResponse);
         }
     }
 }

@@ -48,6 +48,12 @@ namespace WorldCities.Core.Services.CityServices
             return city.ToCityResponse();
         }
 
+        public async Task<List<CityResponse>> GetLikedCities(Guid userId)
+        {
+            List<City> likedCities = await _cityRepository.getWhere(c => c.Likes.Any(l => l.UserGuid == userId));
+            return likedCities.Select(c => c.ToCityResponse()).ToList();
+        } 
+
         public async Task<List<CityResponse>> GetUserCities(string userId)
         {
             ApplicationUser? user = await _userManager.Users

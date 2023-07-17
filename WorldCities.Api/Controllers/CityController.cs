@@ -33,10 +33,9 @@ namespace WorldCities.Api.Controllers
         [HttpGet]
         [Authorize]
         [Route("")]
-        public async Task<IActionResult> getUserCities()
+        public async Task<IActionResult> getUserCities([ModelBinder(typeof(JwtUserIdModelBinder))] Guid userGuid)
         {
-            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            List<CityResponse>? userCities = await _cityGetterService.GetUserCities(userId);
+            List<CityResponse>? userCities = await _cityGetterService.GetUserCities(userGuid.ToString());
             return new JsonResult(userCities);
         }
 
@@ -63,6 +62,15 @@ namespace WorldCities.Api.Controllers
             [FromForm] CityAddRequest cityAddRequest, [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userGuid)
         {
             CityResponse? city = await _cityAdderService.addCity(cityAddRequest, userGuid);
+            return new JsonResult(city);
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("liked")]
+        public async Task<IActionResult> GetLikedCities([ModelBinder(typeof(JwtUserIdModelBinder))] Guid userGuid)
+        {
+            List<CityResponse>? city = await _cityGetterService.GetLikedCities(userGuid);
             return new JsonResult(city);
         }
 

@@ -44,7 +44,7 @@ namespace WorldCities.Infrastructure.Repositories
             return entity;
         }
 
-        public async Task<List<T>?> getWhere(Expression<Func<T, bool>> predicate)
+        public virtual async Task<List<T>?> getWhere(Expression<Func<T, bool>> predicate)
         {
             List<T>? entities = await _dbSet.Where(predicate).ToListAsync();
 

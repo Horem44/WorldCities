@@ -13,5 +13,7 @@ namespace WorldCities.Core.ServiceContracts.CityServiceContracts
         Task<List<CityResponse>?> getAllCities();
         Task<CityResponse?> getCityByGuid(Guid? guid);
         Task<List<CityResponse>> GetUserCities(string userId);
+
+        Task<List<CityResponse>> GetLikedCities(Guid userId);
     }
 }

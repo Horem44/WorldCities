@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using WorldCities.Core.Domain.Entities;
 using WorldCities.Core.Domain.RepositoryContracts.CityRepositoryContract;
 using WorldCities.Infrastructure.ApplicationDatabaseContext;
@@ -30,6 +31,14 @@ namespace WorldCities.Infrastructure.Repositories.CitiesRepository
                 .FirstOrDefaultAsync(c => c.Guid == guid);
 
             return city;
+        }
+
+        public override async Task<List<City>?> getWhere(Expression<Func<City, bool>> predicate)
+        {
+            List<City>? cities = await _db.Cities.Include(c => c.Country)
+                .Include(c => c.Likes).Where(predicate).ToListAsync();
+
+            return cities;
         }
     }
 }
