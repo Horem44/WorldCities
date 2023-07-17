@@ -15,6 +15,12 @@ namespace WorldCities.Infrastructure.Repositories.LikeRepository
         public async Task<Like> GetByUserCityGuid(Guid userGuid, Guid cityGuid)
         {
             List<Like>? likes = await getWhere(l => l.UserGuid == userGuid && l.CityGuid == cityGuid);
+
+            if(likes == null || likes.Count == 0 )
+            {
+                return null;
+            }
+
             return likes.First();
          }
     }

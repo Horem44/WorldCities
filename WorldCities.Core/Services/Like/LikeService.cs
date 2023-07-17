@@ -21,9 +21,9 @@ namespace WorldCities.Core.Services.LikeService
 
         public async Task<LikeResponse> AddLike(Guid userGuid, Guid cityGuid)
         {
-            Like like = new Like() { CityGuid = cityGuid, UserGuid = userGuid };
-            await _likeRepository.add(like);
-            return like.ToLikeResponse();
+           Like like = new Like() { CityGuid = cityGuid, UserGuid = userGuid };
+           await _likeRepository.add(like);
+           return like.ToLikeResponse();
         }
 
         public async Task<bool> IsAlreadyExists(Guid userGuid, Guid cityGuid)

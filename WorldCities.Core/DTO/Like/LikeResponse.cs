@@ -3,6 +3,7 @@
     public class LikeResponse
     {
         public Guid LikeGuid {  get; set; }
+        public Guid UserGuid { get; set; }
     }
 
     public static class LikeExtensions
@@ -11,6 +12,7 @@
         {
             return new LikeResponse()
             {
+                UserGuid = like.UserGuid,
                 LikeGuid = like.Guid
             };
         }

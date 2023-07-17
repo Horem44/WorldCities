@@ -70,6 +70,8 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddSignalR();
+
 builder.Services.AddHealthChecks().AddICMPHealthCheck(300, "127.0.0.1");
 
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
@@ -115,12 +117,16 @@ app.UseRouting();
 
 app.UseCors();
 
+app.MapControllers();
+app.MapHub<CityHub>("/api/city-hub");
+
+app.MapHub<HealthCheckHub>("/api/health-hub");
+
 app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.UseHealthChecks(new PathString("/api/health"), new JsonHealthCheckOptions());
 
-app.MapControllers();
 
 app.Run();

@@ -1,16 +1,15 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using WorldCities.Infrastructure.Hubs;
 
-namespace WorldCities.Api.Controllers.Broadcast
+namespace WorldCities.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    public class BroadcastController : ControllerBase
+    public class HealthCheckController : ControllerBase
     {
         private IHubContext<HealthCheckHub> _hub;
-        public BroadcastController(
+        public HealthCheckController(
         IHubContext<HealthCheckHub> hub
         )
         {
