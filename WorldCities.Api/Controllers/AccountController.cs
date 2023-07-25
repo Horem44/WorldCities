@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using WorldCities.Core.Identity;
-using WorldCities.Core.DTO.Auth;
 using Microsoft.AspNetCore.Mvc;
-using WorldCities.Core.ServiceContracts.Auth;
+using WorldCities.Core.DTO.Auth;
+using WorldCities.Core.Interfaces.Services;
+using WorldCities.Domain.Identity;
+using WorldCities.Infrastructure.ActionFilters;
 using WorldCities.Infrastructure.ModelBinders;
-using WorldCities.Core.DTO.User;
 
 namespace WorldCities.Api.Controllers
 {
@@ -15,37 +14,26 @@ namespace WorldCities.Api.Controllers
     public class AccountController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
         private readonly IJwtService _jwtService;
 
-        public AccountController
-            (
-            UserManager<ApplicationUser> userManager, 
-            RoleManager<ApplicationRole> roleManager,
+        public AccountController(
+            UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IJwtService jwtService
-            )
+        )
         {
             _userManager = userManager;
-            _roleManager = roleManager;
             _signInManager = signInManager;
             _jwtService = jwtService;
         }
 
         [HttpPost]
         [AllowAnonymous]
+        [ValidateModelState]
         public async Task<ActionResult<AuthResponse>> Register(RegisterDto registerDto)
         {
-            if (!ModelState.IsValid)
-            {
-                string errorMessage = string.Join(" | ",
-                    ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
-
-                return Problem(errorMessage);
-            }
-
             ApplicationUser user = new ApplicationUser()
             {
                 UserName = registerDto.Email,
@@ -53,7 +41,10 @@ namespace WorldCities.Api.Controllers
                 Email = registerDto.Email,
             };
 
-            IdentityResult identityResult = await _userManager.CreateAsync(user, registerDto.Password);
+            IdentityResult identityResult = await _userManager.CreateAsync(
+                user,
+                registerDto.Password
+            );
 
             if (identityResult.Succeeded)
             {
@@ -65,13 +56,14 @@ namespace WorldCities.Api.Controllers
             }
             else
             {
-                string errorMessage = string.Join(" | ",
-                    identityResult.Errors.Select(e => e.Description));
+                string errorMessage = string.Join(
+                    " | ",
+                    identityResult.Errors.Select(e => e.Description)
+                );
 
                 return Problem(errorMessage);
             }
         }
-
 
         [HttpGet]
         [AllowAnonymous]
@@ -79,7 +71,7 @@ namespace WorldCities.Api.Controllers
         {
             ApplicationUser? user = await _userManager.FindByEmailAsync(email);
 
-            if(user == null)
+            if (user == null)
             {
                 return Ok(true);
             }
@@ -87,27 +79,23 @@ namespace WorldCities.Api.Controllers
             return Ok(false);
         }
 
-
         [HttpPost]
         [AllowAnonymous]
+        [ValidateModelState]
         public async Task<ActionResult<ApplicationUser>> Login(LoginDto loginDto)
         {
-            if (!ModelState.IsValid)
-            {
-                string errorMessage = string.Join(" | ",
-                    ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
+            var indetityResult = await _signInManager.PasswordSignInAsync(
+                loginDto.Email,
+                loginDto.Password,
+                isPersistent: false,
+                lockoutOnFailure: false
+            );
 
-                return Problem(errorMessage);
-            }
-
-            var indetityResult = await _signInManager.PasswordSignInAsync
-                (loginDto.Email, loginDto.Password, isPersistent: false, lockoutOnFailure: false);
-
-            if(indetityResult.Succeeded)
+            if (indetityResult.Succeeded)
             {
                 ApplicationUser? user = await _userManager.FindByEmailAsync(loginDto.Email);
-                
-                if(user == null)
+
+                if (user == null)
                 {
                     return NoContent();
                 }
@@ -131,11 +119,13 @@ namespace WorldCities.Api.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> authenticate([ModelBinder(typeof(JwtUserIdModelBinder))] Guid userGuid)
+        public async Task<IActionResult> authenticate(
+            [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userGuid
+        )
         {
             ApplicationUser? user = await _userManager.FindByIdAsync(userGuid.ToString());
 
-            if(user == null)
+            if (user == null)
             {
                 return Ok(false);
             }

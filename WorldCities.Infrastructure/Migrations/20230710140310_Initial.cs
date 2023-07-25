@@ -13,28 +13,31 @@ namespace WorldCities.Infrastructure.Migrations
         {
             migrationBuilder.CreateTable(
                 name: "Countries",
-                columns: table => new
-                {
-                    Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ISO2 = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ISO3 = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
+                columns: table =>
+                    new
+                    {
+                        Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                        Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                        ISO2 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                        ISO3 = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Countries", x => x.Guid);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "Cities",
-                columns: table => new
-                {
-                    Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Lat = table.Column<decimal>(type: "decimal(7,4)", nullable: false),
-                    Lon = table.Column<decimal>(type: "decimal(7,4)", nullable: false),
-                    CountryGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
+                columns: table =>
+                    new
+                    {
+                        Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                        Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                        Lat = table.Column<decimal>(type: "decimal(7,4)", nullable: false),
+                        Lon = table.Column<decimal>(type: "decimal(7,4)", nullable: false),
+                        CountryGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cities", x => x.Guid);
@@ -43,23 +46,24 @@ namespace WorldCities.Infrastructure.Migrations
                         column: x => x.CountryGuid,
                         principalTable: "Countries",
                         principalColumn: "Guid",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cities_CountryGuid",
                 table: "Cities",
-                column: "CountryGuid");
+                column: "CountryGuid"
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Cities");
+            migrationBuilder.DropTable(name: "Cities");
 
-            migrationBuilder.DropTable(
-                name: "Countries");
+            migrationBuilder.DropTable(name: "Countries");
         }
     }
 }

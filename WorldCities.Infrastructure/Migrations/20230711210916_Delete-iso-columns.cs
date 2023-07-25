@@ -10,13 +10,9 @@ namespace WorldCities.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "ISO2",
-                table: "Countries");
+            migrationBuilder.DropColumn(name: "ISO2", table: "Countries");
 
-            migrationBuilder.DropColumn(
-                name: "ISO3",
-                table: "Countries");
+            migrationBuilder.DropColumn(name: "ISO3", table: "Countries");
 
             migrationBuilder.AlterColumn<string>(
                 name: "Name",
@@ -24,7 +20,8 @@ namespace WorldCities.Infrastructure.Migrations
                 type: "varchar(32)",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+                oldType: "nvarchar(max)"
+            );
         }
 
         /// <inheritdoc />
@@ -35,14 +32,16 @@ namespace WorldCities.Infrastructure.Migrations
                 table: "Countries",
                 type: "nvarchar(max)",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: ""
+            );
 
             migrationBuilder.AddColumn<string>(
                 name: "ISO3",
                 table: "Countries",
                 type: "nvarchar(max)",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: ""
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "Name",
@@ -50,7 +49,8 @@ namespace WorldCities.Infrastructure.Migrations
                 type: "nvarchar(max)",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "varchar(32)");
+                oldType: "varchar(32)"
+            );
         }
     }
 }

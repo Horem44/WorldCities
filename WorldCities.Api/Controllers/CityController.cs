@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using WorldCities.Core.Domain.Entities;
-using WorldCities.Core.DTO.Cities;
-using WorldCities.Core.ServiceContracts.CityImageServiceContracts;
-using WorldCities.Core.ServiceContracts.CityServiceContracts;
+using WorldCities.Core.Commands.Cities.AddCity;
+using WorldCities.Core.Queries.Cities.GetAllCities;
+using WorldCities.Core.Queries.Cities.GetCountryCities;
+using WorldCities.Core.Queries.Cities.GetLikedCities;
+using WorldCities.Core.Queries.Cities.GetUserCities;
+using WorldCities.Core.Queries.Cities.Models;
+using WorldCities.Core.Queries.CityImages.GetCityImageById;
+using WorldCities.Core.Queries.CityImages.Models;
 using WorldCities.Infrastructure.ModelBinders;
 
 namespace WorldCities.Api.Controllers
@@ -13,74 +17,100 @@ namespace WorldCities.Api.Controllers
     [ApiController]
     public class CityController : ControllerBase
     {
-        private readonly ICitiesGetterService _cityGetterService;
-        private readonly ICitiesAdderService _cityAdderService;
+        private readonly IMediator _mediator;
 
-        private readonly ICityImageGetterService _cityImageGetterService;
-
-        public CityController
-            (
-                ICitiesGetterService cityGetterService,
-                ICitiesAdderService cityAdderService,
-                ICityImageGetterService cityImageGetterService
-            )
+        public CityController(IMediator mediator)
         {
-            _cityGetterService = cityGetterService;
-            _cityAdderService = cityAdderService;
-            _cityImageGetterService = cityImageGetterService;
+            _mediator = mediator;
         }
 
         [HttpGet]
         [Authorize]
         [Route("")]
-        public async Task<IActionResult> getUserCities([ModelBinder(typeof(JwtUserIdModelBinder))] Guid userGuid)
+        public async Task<IActionResult> GetUserCities(
+            [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userGuid,
+            CancellationToken cancellationToken
+        )
         {
-            List<CityResponse>? userCities = await _cityGetterService.GetUserCities(userGuid.ToString());
+            List<CityDto> userCities = await _mediator.Send(
+                new GetUserCitiesQuery(userGuid),
+                cancellationToken
+            );
+
             return new JsonResult(userCities);
         }
 
         [HttpGet]
         [Route("all")]
-        public async Task<IActionResult> getAllCities()
+        public async Task<IActionResult> GetAllCities(CancellationToken cancellationToken)
         {
-            List<CityResponse>? allCities = await _cityGetterService.getAllCities();
-            return new JsonResult(allCities);
-        }
+            List<CityDto> allCities = await _mediator.Send(
+                new GetAllCitiesQuery(),
+                cancellationToken
+            );
 
-        [HttpGet]
-        [Route("{guid:guid}")]
-        public async Task<IActionResult> getCityByGuid([FromRoute] Guid guid)
-        {
-            CityResponse? city = await _cityGetterService.getCityByGuid(guid);
-            return new JsonResult(city);
+            return new JsonResult(allCities);
         }
 
         [HttpPost]
         [Authorize]
         [Route("")]
-        public async Task<IActionResult> addCity(
-            [FromForm] CityAddRequest cityAddRequest, [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userGuid)
+        public async Task<IActionResult> AddCity(
+            [FromForm] AddCityCommand command,
+            [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userId,
+            CancellationToken cancellationToken
+        )
         {
-            CityResponse? city = await _cityAdderService.addCity(cityAddRequest, userGuid);
-            return new JsonResult(city);
+            Guid cityId = await _mediator.Send(command, cancellationToken);
+
+            return new JsonResult(new { cityId });
         }
 
         [HttpGet]
         [Authorize]
         [Route("liked")]
-        public async Task<IActionResult> GetLikedCities([ModelBinder(typeof(JwtUserIdModelBinder))] Guid userGuid)
+        public async Task<IActionResult> GetLikedCities(
+            [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userId,
+            CancellationToken cancellationToken
+        )
         {
-            List<CityResponse>? city = await _cityGetterService.GetLikedCities(userGuid);
+            List<CityDto>? city = await _mediator.Send(
+                new GetLikedCitiesQuery(userId),
+                cancellationToken
+            );
+
             return new JsonResult(city);
         }
 
         [HttpGet]
-        [Route("image/{guid:guid}")]
-        public async Task<IActionResult> GetCityImage([FromRoute] Guid guid)
+        [Authorize]
+        [Route("{countryId:guid}")]
+        public async Task<IActionResult> GetCountryCities(
+            [FromRoute] Guid countryId,
+            CancellationToken cancellationToken
+        )
         {
-            CityImage? image = await _cityImageGetterService.getFileByGuid(guid);
-            var imageStream = new MemoryStream(image.FileData);
-            return new FileStreamResult(imageStream, image.ContentType);
+            List<CityDto> countryCities = await _mediator.Send(
+                new GetCountryCitiesQuery(countryId),
+                cancellationToken
+            );
+
+            return new JsonResult(countryCities);
+        }
+
+        [HttpGet]
+        [Route("image/{id:guid}")]
+        public async Task<IActionResult> GetCityImage(
+            [FromRoute] Guid id,
+            CancellationToken cancellationToken
+        )
+        {
+            CityImageDto cityImageDto = await _mediator.Send(
+                new GetCityImageByIdQuery(id),
+                cancellationToken
+            );
+
+            return new FileStreamResult(cityImageDto.MemoryStream, cityImageDto.ContentType);
         }
     }
 }

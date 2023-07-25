@@ -10,28 +10,26 @@ namespace WorldCities.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropIndex(
-                name: "IX_Likes_CityGuid",
-                table: "Likes");
+            migrationBuilder.DropIndex(name: "IX_Likes_CityGuid", table: "Likes");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Likes_CityGuid_UserGuid",
                 table: "Likes",
                 columns: new[] { "CityGuid", "UserGuid" },
-                unique: true);
+                unique: true
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropIndex(
-                name: "IX_Likes_CityGuid_UserGuid",
-                table: "Likes");
+            migrationBuilder.DropIndex(name: "IX_Likes_CityGuid_UserGuid", table: "Likes");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Likes_CityGuid",
                 table: "Likes",
-                column: "CityGuid");
+                column: "CityGuid"
+            );
         }
     }
 }

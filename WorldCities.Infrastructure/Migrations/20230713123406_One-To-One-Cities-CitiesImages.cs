@@ -15,15 +15,14 @@ namespace WorldCities.Infrastructure.Migrations
                 name: "CityGuid",
                 table: "CitiesImages",
                 type: "uniqueidentifier",
-                nullable: true);
+                nullable: true
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "CityGuid",
-                table: "CitiesImages");
+            migrationBuilder.DropColumn(name: "CityGuid", table: "CitiesImages");
         }
     }
 }

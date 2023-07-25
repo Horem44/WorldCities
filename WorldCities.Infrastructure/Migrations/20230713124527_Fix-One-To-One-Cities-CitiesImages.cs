@@ -19,24 +19,28 @@ namespace WorldCities.Infrastructure.Migrations
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"),
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_CitiesImages_CityGuid",
                 table: "CitiesImages",
-                column: "CityGuid");
+                column: "CityGuid"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cities_CityImageGuid",
                 table: "Cities",
-                column: "CityImageGuid");
+                column: "CityImageGuid"
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Cities_CitiesImages_CityImageGuid",
                 table: "Cities",
                 column: "CityImageGuid",
                 principalTable: "CitiesImages",
-                principalColumn: "Guid");
+                principalColumn: "Guid"
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_CitiesImages_Cities_CityGuid",
@@ -44,7 +48,8 @@ namespace WorldCities.Infrastructure.Migrations
                 column: "CityGuid",
                 principalTable: "Cities",
                 principalColumn: "Guid",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
         }
 
         /// <inheritdoc />
@@ -52,19 +57,17 @@ namespace WorldCities.Infrastructure.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_Cities_CitiesImages_CityImageGuid",
-                table: "Cities");
+                table: "Cities"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "FK_CitiesImages_Cities_CityGuid",
-                table: "CitiesImages");
+                table: "CitiesImages"
+            );
 
-            migrationBuilder.DropIndex(
-                name: "IX_CitiesImages_CityGuid",
-                table: "CitiesImages");
+            migrationBuilder.DropIndex(name: "IX_CitiesImages_CityGuid", table: "CitiesImages");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Cities_CityImageGuid",
-                table: "Cities");
+            migrationBuilder.DropIndex(name: "IX_Cities_CityImageGuid", table: "Cities");
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "CityGuid",
@@ -72,7 +75,8 @@ namespace WorldCities.Infrastructure.Migrations
                 type: "uniqueidentifier",
                 nullable: true,
                 oldClrType: typeof(Guid),
-                oldType: "uniqueidentifier");
+                oldType: "uniqueidentifier"
+            );
         }
     }
 }

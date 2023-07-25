@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using WorldCities.Core.Domain.RepositoryContracts;
+using WorldCities.Core.Interfaces.Repositories;
 using WorldCities.Infrastructure.ApplicationDatabaseContext;
 
 namespace WorldCities.Infrastructure.Repositories
 {
-    public abstract class BaseRepository<T> : IBaseRepository<T> where T : class
+    public abstract class BaseRepository<T> : IBaseRepository<T>
+        where T : class
     {
         private readonly ApplicationDbContext _db;
         private readonly DbSet<T> _dbSet;
@@ -16,44 +17,42 @@ namespace WorldCities.Infrastructure.Repositories
             _dbSet = db.Set<T>();
         }
 
-        public virtual async Task<T> add(T entity)
+        public virtual async Task<T> Add(T entity, CancellationToken cancellationToken)
         {
-            await _dbSet.AddAsync(entity);
-            await _db.SaveChangesAsync();
+            await _dbSet.AddAsync(entity, cancellationToken);
+            await _db.SaveChangesAsync(cancellationToken);
 
             return entity;
         }
 
-        public virtual async Task<List<T>?> all()
+        public virtual async Task<List<T>?> All(CancellationToken cancellationToken)
         {
-            List<T>? allEntities = await _dbSet.ToListAsync();
+            List<T>? allEntities = await _dbSet.ToListAsync(cancellationToken);
 
             return allEntities;
         }
 
-        public virtual async Task delete(T entity)
+        public virtual async Task Delete(T entity, CancellationToken cancellationToken)
         {
             _dbSet.Remove(entity);
-            await _db.SaveChangesAsync();
+            await _db.SaveChangesAsync(cancellationToken);
         }
 
-        public virtual async Task<T?> getByGuid(Guid? guid)
+        public virtual async Task<T?> GetByGuid(Guid id, CancellationToken cancellationToken)
         {
-            T? entity = await _dbSet.FindAsync(guid);
+            T? entity = await _dbSet.FindAsync(id, cancellationToken);
 
             return entity;
         }
 
-        public virtual async Task<List<T>?> getWhere(Expression<Func<T, bool>> predicate)
+        public virtual async Task<List<T>> GetWhere(
+            Expression<Func<T, bool>> predicate,
+            CancellationToken cancellationToken
+        )
         {
-            List<T>? entities = await _dbSet.Where(predicate).ToListAsync();
+            List<T> entities = await _dbSet.Where(predicate).ToListAsync(cancellationToken);
 
             return entities;
-        }
-
-        public Task<T> update(T entity)
-        {
-            throw new NotImplementedException();
         }
     }
 }

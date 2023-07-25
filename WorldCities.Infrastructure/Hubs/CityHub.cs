@@ -2,7 +2,7 @@
 
 namespace WorldCities.Infrastructure.Hubs
 {
-    public class CityHub: Hub
+    public class CityHub : Hub
     {
         public async Task IncreaseCityLikesCountClient(Guid cityGuid)
         {

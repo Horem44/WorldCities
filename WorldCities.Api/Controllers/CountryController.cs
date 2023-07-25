@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WorldCities.Core.DTO.Cities;
-using WorldCities.Core.DTO.Countries;
-using WorldCities.Core.ServiceContracts.CountryServiceContracts;
+using WorldCities.Core.Queries.Countries.GetUserCountries;
+using WorldCities.Core.Queries.Countries.Models;
 using WorldCities.Infrastructure.ModelBinders;
 
 namespace WorldCities.Api.Controllers
@@ -12,29 +11,25 @@ namespace WorldCities.Api.Controllers
     [ApiController]
     public class CountryController : ControllerBase
     {
-        private readonly ICountryGetterService _countryGetterService;
+        private readonly IMediator _mediator;
 
-        public CountryController(ICountryGetterService countryGetterService)
+        public CountryController(IMediator mediator)
         {
-            _countryGetterService = countryGetterService;
+            _mediator = mediator;
         }
 
         [HttpGet]
         [Authorize]
         [Route("")]
-        public async Task<IActionResult> getUserCountries([ModelBinder(typeof(JwtUserIdModelBinder))] Guid userGuid)
+        public async Task<IActionResult> GetUserCountries(
+            [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userId
+        )
         {
-            List<CountryResponse>? userCountries = await _countryGetterService.GetUserCountries(userGuid);
-            return new JsonResult(userCountries);
-        }
+            List<CountryDto> userCountries = await _mediator.Send(
+                new GetUserCountriesQuery(userId)
+            );
 
-        [HttpGet]
-        [Authorize]
-        [Route("{countryGuid:guid}")]
-        public async Task<IActionResult> getCountryCities([FromRoute] Guid countryGuid)
-        {
-            List<CityResponse>? countryCities = await _countryGetterService.GetCountryCities(countryGuid);
-            return new JsonResult(countryCities);
+            return new JsonResult(userCountries);
         }
     }
 }

@@ -9,9 +9,8 @@ namespace WorldCities.Api.Controllers
     public class HealthCheckController : ControllerBase
     {
         private IHubContext<HealthCheckHub> _hub;
-        public HealthCheckController(
-        IHubContext<HealthCheckHub> hub
-        )
+
+        public HealthCheckController(IHubContext<HealthCheckHub> hub)
         {
             _hub = hub;
         }

@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorldCities.Core", "WorldCi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorldCities.Infrastructure", "WorldCities.Infrastructure\WorldCities.Infrastructure.csproj", "{EFC50987-A1AE-48AC-915A-177F7AE2827B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldCities.Domain", "WorldCities.Domain\WorldCities.Domain.csproj", "{76F5D7C8-C9A1-440F-8B48-FA093135DDB2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{EFC50987-A1AE-48AC-915A-177F7AE2827B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFC50987-A1AE-48AC-915A-177F7AE2827B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFC50987-A1AE-48AC-915A-177F7AE2827B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76F5D7C8-C9A1-440F-8B48-FA093135DDB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76F5D7C8-C9A1-440F-8B48-FA093135DDB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76F5D7C8-C9A1-440F-8B48-FA093135DDB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76F5D7C8-C9A1-440F-8B48-FA093135DDB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

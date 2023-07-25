@@ -23,6 +23,5 @@ namespace WorldCities.Core.DTO.Auth
 
         [Required]
         public string ConfirmPassword { get; set; } = string.Empty;
-
     }
 }

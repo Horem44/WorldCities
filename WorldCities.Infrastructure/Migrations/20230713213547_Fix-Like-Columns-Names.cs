@@ -10,33 +10,25 @@ namespace WorldCities.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Likes_AspNetUsers_UserId",
-                table: "Likes");
+            migrationBuilder.DropForeignKey(name: "FK_Likes_AspNetUsers_UserId", table: "Likes");
 
-            migrationBuilder.DropForeignKey(
-                name: "FK_Likes_Cities_CityId",
-                table: "Likes");
+            migrationBuilder.DropForeignKey(name: "FK_Likes_Cities_CityId", table: "Likes");
 
-            migrationBuilder.RenameColumn(
-                name: "UserId",
-                table: "Likes",
-                newName: "UserGuid");
+            migrationBuilder.RenameColumn(name: "UserId", table: "Likes", newName: "UserGuid");
 
-            migrationBuilder.RenameColumn(
-                name: "CityId",
-                table: "Likes",
-                newName: "CityGuid");
+            migrationBuilder.RenameColumn(name: "CityId", table: "Likes", newName: "CityGuid");
 
             migrationBuilder.RenameIndex(
                 name: "IX_Likes_UserId",
                 table: "Likes",
-                newName: "IX_Likes_UserGuid");
+                newName: "IX_Likes_UserGuid"
+            );
 
             migrationBuilder.RenameIndex(
                 name: "IX_Likes_CityId",
                 table: "Likes",
-                newName: "IX_Likes_CityGuid");
+                newName: "IX_Likes_CityGuid"
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Likes_AspNetUsers_UserGuid",
@@ -44,7 +36,8 @@ namespace WorldCities.Infrastructure.Migrations
                 column: "UserGuid",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Likes_Cities_CityGuid",
@@ -52,39 +45,32 @@ namespace WorldCities.Infrastructure.Migrations
                 column: "CityGuid",
                 principalTable: "Cities",
                 principalColumn: "Guid",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Likes_AspNetUsers_UserGuid",
-                table: "Likes");
+            migrationBuilder.DropForeignKey(name: "FK_Likes_AspNetUsers_UserGuid", table: "Likes");
 
-            migrationBuilder.DropForeignKey(
-                name: "FK_Likes_Cities_CityGuid",
-                table: "Likes");
+            migrationBuilder.DropForeignKey(name: "FK_Likes_Cities_CityGuid", table: "Likes");
 
-            migrationBuilder.RenameColumn(
-                name: "UserGuid",
-                table: "Likes",
-                newName: "UserId");
+            migrationBuilder.RenameColumn(name: "UserGuid", table: "Likes", newName: "UserId");
 
-            migrationBuilder.RenameColumn(
-                name: "CityGuid",
-                table: "Likes",
-                newName: "CityId");
+            migrationBuilder.RenameColumn(name: "CityGuid", table: "Likes", newName: "CityId");
 
             migrationBuilder.RenameIndex(
                 name: "IX_Likes_UserGuid",
                 table: "Likes",
-                newName: "IX_Likes_UserId");
+                newName: "IX_Likes_UserId"
+            );
 
             migrationBuilder.RenameIndex(
                 name: "IX_Likes_CityGuid",
                 table: "Likes",
-                newName: "IX_Likes_CityId");
+                newName: "IX_Likes_CityId"
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Likes_AspNetUsers_UserId",
@@ -92,7 +78,8 @@ namespace WorldCities.Infrastructure.Migrations
                 column: "UserId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Likes_Cities_CityId",
@@ -100,7 +87,8 @@ namespace WorldCities.Infrastructure.Migrations
                 column: "CityId",
                 principalTable: "Cities",
                 principalColumn: "Guid",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
         }
     }
 }
