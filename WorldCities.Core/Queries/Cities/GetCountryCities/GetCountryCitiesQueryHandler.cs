@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using WorldCities.Core.Interfaces.Repositories;
 using WorldCities.Core.Queries.Cities.Models;
-using WorldCities.Domain.Entities.Cities;
+using WorldCities.Domain.Entities;
 
 namespace WorldCities.Core.Queries.Cities.GetCountryCities
 {
@@ -14,11 +15,22 @@ namespace WorldCities.Core.Queries.Cities.GetCountryCities
             CancellationToken cancellationToken
         )
         {
-            List<City> countryCities = await CountryRepository.GetCountryCities(
-                request.CountryId,
-                cancellationToken
-            );
-            return countryCities.Select(c => Mapper.Map<CityDto>(c)).ToList();
+            Country? country = await CountryRepository
+                .Get(request.CountryId)
+                .Include(c => c.Cities)
+                .ThenInclude(city => city.Likes)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            return country?.Cities != null
+                ? country.Cities
+                    .Select(city =>
+                    {
+                        CityDto cityDto = Mapper.Map<CityDto>(city);
+                        cityDto.CountryName = country.Name;
+                        return cityDto;
+                    })
+                    .ToList()
+                : new();
         }
     }
 }

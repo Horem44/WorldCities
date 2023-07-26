@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using WorldCities.Core.Commands.Cities.AddCity;
 using WorldCities.Core.Interfaces.Repositories;
@@ -11,7 +10,7 @@ namespace WorldCities.Infrastructure
     {
         public static IServiceCollection AddAppInfrastructure(this IServiceCollection services)
         {
-            var appCoreassembly = Assembly.GetAssembly(typeof(AddCityCommand));
+            var appCoreassembly = Assembly.GetAssembly(typeof(AddCityCommand))!;
 
             return services
                 .AddScoped<ICityRepository, CitiesRepository>()

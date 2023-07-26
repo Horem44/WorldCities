@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using WorldCities.Domain.Entities.Cities;
-using WorldCities.Domain.Entities.Countries;
-using WorldCities.Domain.Entities.Likes;
+using WorldCities.Domain.Entities;
 using WorldCities.Domain.Identity;
 
 namespace WorldCities.Infrastructure.ApplicationDatabaseContext

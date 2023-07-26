@@ -1,4 +1,4 @@
-﻿using WorldCities.Domain.Entities.Cities;
+﻿using WorldCities.Domain.Entities;
 
 namespace WorldCities.Core.Interfaces.Repositories
 {

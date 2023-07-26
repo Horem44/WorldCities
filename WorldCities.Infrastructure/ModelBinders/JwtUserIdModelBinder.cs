@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
 
 namespace WorldCities.Infrastructure.ModelBinders
 {
@@ -11,7 +10,7 @@ namespace WorldCities.Infrastructure.ModelBinders
         {
             HttpContext httpContext = bindingContext.HttpContext;
 
-            string userId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string? userId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (string.IsNullOrEmpty(userId) || !Guid.TryParse(userId, out var userGuid))
             {

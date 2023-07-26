@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WorldCities.Core.Queries.Countries.GetUserCountries;
-using WorldCities.Core.Queries.Countries.Models;
 using WorldCities.Infrastructure.ModelBinders;
 
 namespace WorldCities.Api.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class CountryController : ControllerBase
     {
@@ -19,7 +19,6 @@ namespace WorldCities.Api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         [Route("")]
         public async Task<IActionResult> GetUserCountries(
             [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userId

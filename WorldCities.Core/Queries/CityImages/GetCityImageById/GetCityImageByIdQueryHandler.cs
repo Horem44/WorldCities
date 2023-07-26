@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
+using System.Data.Entity;
 using WorldCities.Core.Interfaces.Repositories;
-using WorldCities.Core.Queries.CityImages.Models;
-using WorldCities.Domain.Entities.Cities;
+using WorldCities.Domain.Entities;
 
 namespace WorldCities.Core.Queries.CityImages.GetCityImageById
 {
@@ -16,10 +16,9 @@ namespace WorldCities.Core.Queries.CityImages.GetCityImageById
             CancellationToken cancellationToken
         )
         {
-            CityImage? image = await CityImageRepository.GetByGuid(
-                request.imageId,
-                cancellationToken
-            );
+            CityImage? image = await CityImageRepository
+                .Get(request.imageId)
+                .FirstOrDefaultAsync(cancellationToken);
 
             if (image == null)
             {

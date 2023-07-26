@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using WorldCities.Core.Queries.CityImages.Models;
-using WorldCities.Domain.Entities.Cities;
+using WorldCities.Domain.Entities;
 
 namespace WorldCities.Core.Queries.CityImages.GetCityImageById
 {

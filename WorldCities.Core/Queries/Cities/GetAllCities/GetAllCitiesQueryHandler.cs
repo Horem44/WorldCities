@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WorldCities.Core.Interfaces.Repositories;
 using WorldCities.Core.Queries.Cities.Models;
-using WorldCities.Domain.Entities.Cities;
+using WorldCities.Domain.Entities;
 
 namespace WorldCities.Core.Queries.Cities.GetAllCities
 {
@@ -15,7 +15,11 @@ namespace WorldCities.Core.Queries.Cities.GetAllCities
             CancellationToken cancellationToken
         )
         {
-            List<City>? allCities = await CityRepository.All(cancellationToken);
+            List<City>? allCities = await CityRepository
+                .Get()
+                .Include(c => c.Country)
+                .Include(c => c.Likes)
+                .ToListAsync(cancellationToken);
 
             if (allCities == null)
             {

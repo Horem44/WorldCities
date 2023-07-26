@@ -1,4 +1,4 @@
-﻿namespace WorldCities.Core.Queries.CityImages.Models
+﻿namespace WorldCities.Core.Queries.CityImages.GetCityImageById
 {
     public class CityImageDto
     {

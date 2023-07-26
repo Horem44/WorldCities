@@ -1,5 +1,5 @@
 ﻿using WorldCities.Core.Interfaces.Repositories;
-using WorldCities.Domain.Entities.Cities;
+using WorldCities.Domain.Entities;
 using WorldCities.Infrastructure.ApplicationDatabaseContext;
 
 namespace WorldCities.Infrastructure.Repositories

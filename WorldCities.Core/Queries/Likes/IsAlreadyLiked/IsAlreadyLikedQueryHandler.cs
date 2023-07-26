@@ -1,6 +1,7 @@
 ﻿using MediatR;
+using System.Data.Entity;
 using WorldCities.Core.Interfaces.Repositories;
-using WorldCities.Domain.Entities.Likes;
+using WorldCities.Domain.Entities;
 
 namespace WorldCities.Core.Queries.Likes.IsAlreadyLiked
 {
@@ -12,11 +13,9 @@ namespace WorldCities.Core.Queries.Likes.IsAlreadyLiked
             CancellationToken cancellationToken
         )
         {
-            Like? existingLike = await LikeRepository.GetByUserCityGuid(
-                request.userId,
-                request.cityId,
-                cancellationToken
-            );
+            Like? existingLike = await LikeRepository
+                .GetByUserCityGuid(request.userId, request.cityId)
+                .FirstOrDefaultAsync(cancellationToken);
 
             return existingLike == null ? false : true;
         }

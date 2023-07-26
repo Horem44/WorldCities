@@ -8,12 +8,12 @@ using WorldCities.Core.Queries.Cities.GetLikedCities;
 using WorldCities.Core.Queries.Cities.GetUserCities;
 using WorldCities.Core.Queries.Cities.Models;
 using WorldCities.Core.Queries.CityImages.GetCityImageById;
-using WorldCities.Core.Queries.CityImages.Models;
 using WorldCities.Infrastructure.ModelBinders;
 
 namespace WorldCities.Api.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class CityController : ControllerBase
     {
@@ -25,7 +25,6 @@ namespace WorldCities.Api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         [Route("")]
         public async Task<IActionResult> GetUserCities(
             [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userGuid,
@@ -53,7 +52,6 @@ namespace WorldCities.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         [Route("")]
         public async Task<IActionResult> AddCity(
             [FromForm] AddCityCommand command,
@@ -61,13 +59,12 @@ namespace WorldCities.Api.Controllers
             CancellationToken cancellationToken
         )
         {
-            Guid cityId = await _mediator.Send(command, cancellationToken);
+            await _mediator.Send(command, cancellationToken);
 
-            return new JsonResult(new { cityId });
+            return Ok();
         }
 
         [HttpGet]
-        [Authorize]
         [Route("liked")]
         public async Task<IActionResult> GetLikedCities(
             [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userId,

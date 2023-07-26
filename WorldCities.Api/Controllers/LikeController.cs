@@ -1,17 +1,15 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using WorldCities.Core.Commands.Likes.AddLike;
-using WorldCities.Core.Commands.Likes.Models;
 using WorldCities.Core.Commands.Likes.RemoveLike;
 using WorldCities.Core.Queries.Likes.IsAlreadyLiked;
-using WorldCities.Infrastructure.Hubs;
 using WorldCities.Infrastructure.ModelBinders;
 
 namespace WorldCities.Api.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class LikeController : ControllerBase
     {
@@ -23,37 +21,32 @@ namespace WorldCities.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> AddLike(
             [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userGuid,
             [FromBody] AddLikeCommand command,
             CancellationToken cancellationToken
         )
         {
-            LikeDto like = await _mediator.Send(command, cancellationToken);
-            return new JsonResult(like);
+            await _mediator.Send(command, cancellationToken);
+
+            return Ok();
         }
 
-        [Route("{cityGuid:guid}")]
+        [Route("{cityId:guid}")]
         [HttpDelete]
-        [Authorize]
         public async Task<IActionResult> RemoveLike(
-            [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userGuid,
-            [FromRoute] Guid cityGuid,
+            [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userId,
+            [FromRoute] Guid cityId,
             CancellationToken cancellationToken
         )
         {
-            Guid deletedLikeId = await _mediator.Send(
-                new RemoveLikeCommand(userGuid, cityGuid),
-                cancellationToken
-            );
+            await _mediator.Send(new RemoveLikeCommand(userId, cityId), cancellationToken);
 
-            return Ok(deletedLikeId);
+            return Ok();
         }
 
         [Route("is-already-liked/{cityGuid:guid}")]
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> IsCityAlreadyLiked(
             [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userGuid,
             [FromRoute] Guid cityGuid,

@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WorldCities.Core\WorldCities.Core.csproj" />
     <ProjectReference Include="..\WorldCities.Infrastructure\WorldCities.Infrastructure.csproj" />
   </ItemGroup>
 

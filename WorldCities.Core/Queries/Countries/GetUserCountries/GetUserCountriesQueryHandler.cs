@@ -2,7 +2,6 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WorldCities.Core.Interfaces.Repositories;
-using WorldCities.Core.Queries.Countries.Models;
 using WorldCities.Domain.Identity;
 
 namespace WorldCities.Core.Queries.Countries.GetUserCountries
@@ -21,16 +20,9 @@ namespace WorldCities.Core.Queries.Countries.GetUserCountries
                 .ThenInclude(c => c.Cities)
                 .FirstOrDefaultAsync(u => u.Id == request.UserId, cancellationToken);
 
-            if (user != null && user.Countries != null)
-            {
-                List<CountryDto> userCountries = user.Countries
-                    .Select(c => Mapper.Map<CountryDto>(c))
-                    .ToList();
-
-                return userCountries;
-            }
-
-            return new();
+            return user?.Countries != null
+                ? user.Countries.Select(Mapper.Map<CountryDto>).ToList()
+                : new();
         }
     }
 }

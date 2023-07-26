@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using WorldCities.Core.Queries.Countries.Models;
 
 namespace WorldCities.Core.Queries.Countries.GetUserCountries
 {
