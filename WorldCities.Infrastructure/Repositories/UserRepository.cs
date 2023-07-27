@@ -13,24 +13,16 @@ namespace WorldCities.Infrastructure.Repositories
             _userManager = userManager;
         }
 
-        public Task<IdentityResult> Create(ApplicationUser user, string password)
-        {
-            return _userManager.CreateAsync(user, password);
-        }
+        public IQueryable<ApplicationUser> GetUsers() => _userManager.Users;
 
-        public Task<ApplicationUser?> FindByEmail(string email)
-        {
-            return _userManager.FindByEmailAsync(email);
-        }
+        public Task<ApplicationUser?> FindByEmail(string email) =>
+            _userManager.FindByEmailAsync(email);
 
-        public Task<ApplicationUser?> FindById(string id)
-        {
-            return _userManager.FindByIdAsync(id);
-        }
+        public Task<ApplicationUser?> FindById(string id) => _userManager.FindByIdAsync(id);
 
-        public IQueryable<ApplicationUser> GetUsers()
-        {
-            return _userManager.Users;
-        }
+        public Task<IdentityResult> Create(ApplicationUser user, string password) =>
+            _userManager.CreateAsync(user, password);
+
+        public Task<IdentityResult> Update(ApplicationUser user) => _userManager.UpdateAsync(user);
     }
 }

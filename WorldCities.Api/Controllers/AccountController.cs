@@ -1,140 +1,73 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WorldCities.Core.DTO.Auth;
-using WorldCities.Core.Interfaces.Services;
-using WorldCities.Domain.Identity;
+using WorldCities.Core.Commands.Users.AuthorizeUser;
+using WorldCities.Core.Commands.Users.LoginUser;
+using WorldCities.Core.Commands.Users.Models;
+using WorldCities.Core.Commands.Users.RegisterUser;
+using WorldCities.Core.Queries.Users.IsEmailAlreadyExists;
+using WorldCities.Core.Queries.Users.LogoutUser;
 using WorldCities.Infrastructure.ActionFilters;
 using WorldCities.Infrastructure.ModelBinders;
 
 namespace WorldCities.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
+    [AllowAnonymous]
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IMediator _mediator;
 
-        private readonly IJwtService _jwtService;
+        public AccountController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
 
-        public AccountController(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            IJwtService jwtService
+        [HttpPost]
+        [ValidateModelState]
+        public async Task<ActionResult> Login(
+            LoginUserCommand command,
+            CancellationToken cancellationToken
         )
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _jwtService = jwtService;
+            UserDto userDto = await _mediator.Send(command, cancellationToken);
+            return new JsonResult(userDto);
         }
 
         [HttpPost]
-        [AllowAnonymous]
         [ValidateModelState]
-        public async Task<ActionResult<AuthResponse>> Register(RegisterDto registerDto)
+        public async Task<ActionResult> Register(
+            RegisterUserCommand command,
+            CancellationToken cancellationToken
+        )
         {
-            ApplicationUser user = new ApplicationUser()
-            {
-                UserName = registerDto.Email,
-                PersonName = registerDto.PersonName,
-                Email = registerDto.Email,
-            };
-
-            IdentityResult identityResult = await _userManager.CreateAsync(
-                user,
-                registerDto.Password
-            );
-
-            if (identityResult.Succeeded)
-            {
-                await _signInManager.SignInAsync(user, isPersistent: false);
-
-                AuthResponse authenticationResponse = _jwtService.CreateJwtToken(user);
-
-                return Ok(authenticationResponse);
-            }
-            else
-            {
-                string errorMessage = string.Join(
-                    " | ",
-                    identityResult.Errors.Select(e => e.Description)
-                );
-
-                return Problem(errorMessage);
-            }
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> IsEmailAlreadyExists(string email)
-        {
-            ApplicationUser? user = await _userManager.FindByEmailAsync(email);
-
-            if (user == null)
-            {
-                return Ok(true);
-            }
-
-            return Ok(false);
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateModelState]
-        public async Task<ActionResult<ApplicationUser>> Login(LoginDto loginDto)
-        {
-            var indetityResult = await _signInManager.PasswordSignInAsync(
-                loginDto.Email,
-                loginDto.Password,
-                isPersistent: false,
-                lockoutOnFailure: false
-            );
-
-            if (indetityResult.Succeeded)
-            {
-                ApplicationUser? user = await _userManager.FindByEmailAsync(loginDto.Email);
-
-                if (user == null)
-                {
-                    return NoContent();
-                }
-
-                AuthResponse authenticationResponse = _jwtService.CreateJwtToken(user);
-
-                return Ok(authenticationResponse);
-            }
-
-            return BadRequest("Wrong email or password");
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-
-            return NoContent();
+            UserDto userDto = await _mediator.Send(command, cancellationToken);
+            return new JsonResult(userDto);
         }
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> authenticate(
-            [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userGuid
+        public async Task<IActionResult> Authorize(
+            [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userId
         )
         {
-            ApplicationUser? user = await _userManager.FindByIdAsync(userGuid.ToString());
+            UserDto userDto = await _mediator.Send(new AuthorizeUserCommand(userId));
+            return new JsonResult(userDto);
+        }
 
-            if (user == null)
-            {
-                return Ok(false);
-            }
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await _mediator.Send(new LogoutUserQuery());
+            return NoContent();
+        }
 
-            await _signInManager.SignInAsync(user, isPersistent: false);
-
-            AuthResponse authenticationResponse = _jwtService.CreateJwtToken(user);
-
-            return Ok(authenticationResponse);
+        [HttpGet]
+        public async Task<IActionResult> IsEmailAlreadyExists(string email)
+        {
+            bool isEmailAlreadyExists = await _mediator.Send(new IsEmailAlreadyExistsQuery(email));
+            return Ok(isEmailAlreadyExists);
         }
     }
 }

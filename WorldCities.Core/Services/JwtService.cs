@@ -3,7 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using WorldCities.Core.DTO.Auth;
+using WorldCities.Core.Commands.Users.Models;
 using WorldCities.Core.Interfaces.Services;
 using WorldCities.Domain.Identity;
 
@@ -18,7 +18,7 @@ namespace WorldCities.Core.Services
             _configuration = configuration;
         }
 
-        public AuthResponse CreateJwtToken(ApplicationUser user)
+        public UserDto CreateJwtToken(ApplicationUser user)
         {
             DateTime expiration = DateTime.UtcNow.AddMinutes(
                 Convert.ToDouble(_configuration["Jwt:EXPIRATION_MINUTES"])
@@ -29,12 +29,12 @@ namespace WorldCities.Core.Services
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Email!),
                 new Claim(ClaimTypes.Name, user.PersonName)
             };
 
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(_configuration["Jwt:Key"])
+                Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!)
             );
 
             SigningCredentials signingCredentials = new SigningCredentials(
@@ -54,7 +54,7 @@ namespace WorldCities.Core.Services
 
             string jwtToken = jwtSecurityTokenHandler.WriteToken(tokenGenerator);
 
-            return new AuthResponse()
+            return new UserDto()
             {
                 UserId = user.Id,
                 Token = jwtToken,

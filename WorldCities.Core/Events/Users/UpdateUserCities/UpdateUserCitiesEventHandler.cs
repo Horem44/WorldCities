@@ -9,7 +9,7 @@ namespace WorldCities.Core.Events.Users.UpdateUserCities
 {
     public record UpdateUserCitiesEventHandler(
         ICityRepository CityRepository,
-        UserManager<ApplicationUser> UserManager
+        IUserRepository UserRepository
     ) : INotificationHandler<UpdateUserCitiesEvent>
     {
         public async Task Handle(
@@ -17,7 +17,7 @@ namespace WorldCities.Core.Events.Users.UpdateUserCities
             CancellationToken cancellationToken
         )
         {
-            ApplicationUser? user = await UserManager.FindByIdAsync(notification.UserId.ToString());
+            ApplicationUser? user = await UserRepository.FindById(notification.UserId.ToString());
 
             City? city = await CityRepository
                 .Get(notification.CityId)
@@ -29,7 +29,7 @@ namespace WorldCities.Core.Events.Users.UpdateUserCities
             }
 
             user.Cities.Add(city);
-            await UserManager.UpdateAsync(user);
+            await UserRepository.Update(user);
         }
     }
 };

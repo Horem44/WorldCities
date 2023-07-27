@@ -20,6 +20,22 @@ namespace WorldCities.Api.Controllers
             _mediator = mediator;
         }
 
+        [Route("is-already-liked/{cityGuid:guid}")]
+        [HttpGet]
+        public async Task<IActionResult> IsCityAlreadyLiked(
+            [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userGuid,
+            [FromRoute] Guid cityGuid,
+            CancellationToken cancellationToken
+        )
+        {
+            bool isExist = await _mediator.Send(
+                new IsAlreadyLikedQuery(userGuid, cityGuid),
+                cancellationToken
+            );
+
+            return Ok(isExist);
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddLike(
             [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userGuid,
@@ -43,22 +59,6 @@ namespace WorldCities.Api.Controllers
             await _mediator.Send(new RemoveLikeCommand(userId, cityId), cancellationToken);
 
             return Ok();
-        }
-
-        [Route("is-already-liked/{cityGuid:guid}")]
-        [HttpGet]
-        public async Task<IActionResult> IsCityAlreadyLiked(
-            [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userGuid,
-            [FromRoute] Guid cityGuid,
-            CancellationToken cancellationToken
-        )
-        {
-            bool isExist = await _mediator.Send(
-                new IsAlreadyLikedQuery(userGuid, cityGuid),
-                cancellationToken
-            );
-
-            return Ok(isExist);
         }
     }
 }

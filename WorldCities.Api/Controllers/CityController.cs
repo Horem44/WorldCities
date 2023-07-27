@@ -51,19 +51,6 @@ namespace WorldCities.Api.Controllers
             return new JsonResult(allCities);
         }
 
-        [HttpPost]
-        [Route("")]
-        public async Task<IActionResult> AddCity(
-            [FromForm] AddCityCommand command,
-            [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userId,
-            CancellationToken cancellationToken
-        )
-        {
-            await _mediator.Send(command, cancellationToken);
-
-            return Ok();
-        }
-
         [HttpGet]
         [Route("liked")]
         public async Task<IActionResult> GetLikedCities(
@@ -108,6 +95,19 @@ namespace WorldCities.Api.Controllers
             );
 
             return new FileStreamResult(cityImageDto.MemoryStream, cityImageDto.ContentType);
+        }
+
+        [HttpPost]
+        [Route("")]
+        public async Task<IActionResult> AddCity(
+            [FromForm] AddCityCommand command,
+            [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userId,
+            CancellationToken cancellationToken
+        )
+        {
+            await _mediator.Send(command, cancellationToken);
+
+            return Ok();
         }
     }
 }

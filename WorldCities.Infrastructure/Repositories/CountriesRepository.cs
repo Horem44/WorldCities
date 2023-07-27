@@ -10,9 +10,6 @@ namespace WorldCities.Infrastructure.Repositories
         public CountriesRepository(ApplicationDbContext db)
             : base(db) { }
 
-        public IQueryable<Country> GetByName(string name)
-        {
-            return Get(c => c.Name == name);
-        }
+        public IQueryable<Country> GetByName(string name) => Get(c => c.Name == name);
     }
 }

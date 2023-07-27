@@ -18,20 +18,12 @@ namespace WorldCities.Infrastructure.Repositories
             _dbSet = db.Set<T>();
         }
 
-        public virtual IQueryable<T> Get()
-        {
-            return _dbSet;
-        }
+        public virtual IQueryable<T> Get() => _dbSet;
 
-        public virtual IQueryable<T> Get(Guid id)
-        {
-            return _dbSet.Where(e => e.Id == id);
-        }
+        public virtual IQueryable<T> Get(Guid id) => _dbSet.Where(e => e.Id == id);
 
-        public virtual IQueryable<T> Get(Expression<Func<T, bool>> predicate)
-        {
-            return _dbSet.Where(predicate);
-        }
+        public virtual IQueryable<T> Get(Expression<Func<T, bool>> predicate) =>
+            _dbSet.Where(predicate);
 
         public async Task<T> Add(T entity, CancellationToken cancellationToken)
         {

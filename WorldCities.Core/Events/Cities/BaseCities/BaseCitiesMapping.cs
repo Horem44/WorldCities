@@ -1,18 +1,18 @@
 ﻿using AutoMapper;
-using MediatR;
-using System.Net.Mime;
+using WorldCities.Core.Events.Cities.AddCityImageForCreatedCity;
+using WorldCities.Core.Events.Cities.AddCountryForCreatedCity;
 using WorldCities.Domain.Entities;
 
-namespace WorldCities.Core.Events.Cities.CityCreated
+namespace WorldCities.Core.Events.Cities.BaseCities
 {
-    public class CityCreatedEventMapping : Profile
+    public class BaseCitiesMapping : Profile
     {
-        public CityCreatedEventMapping()
+        public BaseCitiesMapping()
         {
-            CreateMap<CityCreatedEvent, Country>()
+            CreateMap<AddCountryForCreatedCityEvent, Country>()
                 .ForMember(z => z.Name, z => z.MapFrom(x => x.CountryName));
 
-            CreateMap<CityCreatedEvent, CityImage>()
+            CreateMap<AddCityImageForCreatedCityEvent, CityImage>()
                 .ForMember(z => z.CityId, z => z.MapFrom(x => x.CityId))
                 .ForMember(z => z.FileName, z => z.MapFrom(x => x.Image.FileName))
                 .ForMember(z => z.ContentType, z => z.MapFrom(x => x.Image.ContentType));

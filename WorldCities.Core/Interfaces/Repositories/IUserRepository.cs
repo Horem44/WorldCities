@@ -5,9 +5,10 @@ namespace WorldCities.Core.Interfaces.Repositories
 {
     public interface IUserRepository
     {
+        IQueryable<ApplicationUser> GetUsers();
         Task<ApplicationUser?> FindByEmail(string email);
         Task<ApplicationUser?> FindById(string id);
         Task<IdentityResult> Create(ApplicationUser user, string password);
-        IQueryable<ApplicationUser> GetUsers();
+        Task<IdentityResult> Update(ApplicationUser user);
     }
 }

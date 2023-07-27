@@ -3,15 +3,17 @@ using MediatR;
 using WorldCities.Core.Interfaces.Repositories;
 using WorldCities.Domain.Entities;
 
-namespace WorldCities.Core.Events.Cities.CityCreated
+namespace WorldCities.Core.Events.Cities.AddCityImageForCreatedCity
 {
-    public record CreateCityImageForCreatedCityEventHandler(
-        ICountryRepository CountryRepository,
+    public record AddCityImageForCreatedCityEventHandler(
         ICityImageRepository CityImageRepository,
         IMapper Mapper
-    ) : INotificationHandler<CityCreatedEvent>
+    ) : INotificationHandler<AddCityImageForCreatedCityEvent>
     {
-        public async Task Handle(CityCreatedEvent notification, CancellationToken cancellationToken)
+        public async Task Handle(
+            AddCityImageForCreatedCityEvent notification,
+            CancellationToken cancellationToken
+        )
         {
             if (notification.Image == null || notification.Image.Length == 0)
             {

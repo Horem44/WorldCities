@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace WorldCities.Core.DTO.Auth
+﻿namespace WorldCities.Core.Commands.Users.Models
 {
-    public class AuthResponse
+    public class UserDto
     {
         public Guid UserId { get; set; }
         public string? PersonName { get; set; }
