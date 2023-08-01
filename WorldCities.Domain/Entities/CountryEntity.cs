@@ -14,10 +14,9 @@ namespace WorldCities.Domain.Entities
         [Index(nameof(Name))]
         public string Name { get; set; } = null!;
 
-        public ICollection<City> Cities { get; set; } = new List<City>();
+        public ICollection<City> Cities { get; set; }
 
-        public virtual ICollection<ApplicationUser> Users { get; set; } =
-            new List<ApplicationUser>();
+        public virtual ICollection<ApplicationUser> Users { get; set; }
 
         [NotMapped]
         public int CitiesCount => Cities?.Count ?? 0;

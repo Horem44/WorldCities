@@ -9,7 +9,7 @@ namespace WorldCities.Infrastructure.Repositories
         public LikeRepository(ApplicationDbContext db)
             : base(db) { }
 
-        public IQueryable<Like> GetByUserCityGuid(Guid userGuid, Guid cityGuid) =>
-            Get(l => l.UserGuid == userGuid && l.CityGuid == cityGuid);
+        public IQueryable<Like> GetByUserCityGuid(Guid userId, Guid cityId) =>
+            Get(l => l.UserId == userId && l.CityId == cityId);
     }
 }

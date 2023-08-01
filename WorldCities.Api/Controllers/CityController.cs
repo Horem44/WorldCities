@@ -8,7 +8,6 @@ using WorldCities.Core.Queries.Cities.GetLikedCities;
 using WorldCities.Core.Queries.Cities.GetUserCities;
 using WorldCities.Core.Queries.Cities.Models;
 using WorldCities.Core.Queries.CityImages.GetCityImageById;
-using WorldCities.Infrastructure.ModelBinders;
 
 namespace WorldCities.Api.Controllers
 {
@@ -26,13 +25,10 @@ namespace WorldCities.Api.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> GetUserCities(
-            [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userGuid,
-            CancellationToken cancellationToken
-        )
+        public async Task<IActionResult> GetUserCities(CancellationToken cancellationToken)
         {
             List<CityDto> userCities = await _mediator.Send(
-                new GetUserCitiesQuery(userGuid),
+                new GetUserCitiesQuery(),
                 cancellationToken
             );
 
@@ -53,13 +49,10 @@ namespace WorldCities.Api.Controllers
 
         [HttpGet]
         [Route("liked")]
-        public async Task<IActionResult> GetLikedCities(
-            [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userId,
-            CancellationToken cancellationToken
-        )
+        public async Task<IActionResult> GetLikedCities(CancellationToken cancellationToken)
         {
             List<CityDto>? city = await _mediator.Send(
-                new GetLikedCitiesQuery(userId),
+                new GetLikedCitiesQuery(),
                 cancellationToken
             );
 
@@ -101,7 +94,6 @@ namespace WorldCities.Api.Controllers
         [Route("")]
         public async Task<IActionResult> AddCity(
             [FromForm] AddCityCommand command,
-            [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userId,
             CancellationToken cancellationToken
         )
         {

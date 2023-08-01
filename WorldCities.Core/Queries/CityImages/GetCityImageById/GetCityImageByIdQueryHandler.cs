@@ -3,6 +3,7 @@ using MediatR;
 using System.Data.Entity;
 using WorldCities.Core.Interfaces.Repositories;
 using WorldCities.Domain.Entities;
+using WorldCities.Domain.Exceptions;
 
 namespace WorldCities.Core.Queries.CityImages.GetCityImageById
 {
@@ -22,7 +23,7 @@ namespace WorldCities.Core.Queries.CityImages.GetCityImageById
 
             if (image == null)
             {
-                throw new Exception();
+                throw new NotFoundException("City image not found");
             }
 
             return Mapper.Map<CityImageDto>(image);

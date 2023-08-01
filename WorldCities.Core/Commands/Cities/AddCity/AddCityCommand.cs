@@ -7,8 +7,7 @@ namespace WorldCities.Core.Commands.Cities.AddCity
         string Name,
         decimal Lat,
         decimal Lon,
-        string CountryName,
         IFormFile Image,
-        Guid UserId
+        Guid CountryId
     ) : IRequest<Unit>;
 }

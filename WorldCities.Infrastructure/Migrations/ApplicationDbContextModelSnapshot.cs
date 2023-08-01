@@ -22,30 +22,15 @@ namespace WorldCities.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ApplicationUserCity", b =>
-                {
-                    b.Property<Guid>("CitiesGuid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UsersId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("CitiesGuid", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("ApplicationUserCity");
-                });
-
             modelBuilder.Entity("ApplicationUserCountry", b =>
                 {
-                    b.Property<Guid>("CountriesGuid")
+                    b.Property<Guid>("CountriesId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UsersId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("CountriesGuid", "UsersId");
+                    b.HasKey("CountriesId", "UsersId");
 
                     b.HasIndex("UsersId");
 
@@ -155,16 +140,19 @@ namespace WorldCities.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("WorldCities.Core.Domain.Entities.City", b =>
+            modelBuilder.Entity("WorldCities.Domain.Entities.City", b =>
                 {
-                    b.Property<Guid>("Guid")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CityImageGuid")
+                    b.Property<Guid?>("ApplicationUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CountryGuid")
+                    b.Property<Guid?>("CityImageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CountryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Lat")
@@ -177,22 +165,27 @@ namespace WorldCities.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(32)");
 
-                    b.HasKey("Guid");
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasIndex("CityImageGuid");
+                    b.HasKey("Id");
 
-                    b.HasIndex("CountryGuid");
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("CityImageId");
+
+                    b.HasIndex("CountryId");
 
                     b.ToTable("Cities");
                 });
 
-            modelBuilder.Entity("WorldCities.Core.Domain.Entities.CityImage", b =>
+            modelBuilder.Entity("WorldCities.Domain.Entities.CityImage", b =>
                 {
-                    b.Property<Guid>("Guid")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CityGuid")
+                    b.Property<Guid>("CityId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ContentType")
@@ -207,16 +200,16 @@ namespace WorldCities.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Guid");
+                    b.HasKey("Id");
 
-                    b.HasIndex("CityGuid");
+                    b.HasIndex("CityId");
 
                     b.ToTable("CitiesImages");
                 });
 
-            modelBuilder.Entity("WorldCities.Core.Domain.Entities.Country", b =>
+            modelBuilder.Entity("WorldCities.Domain.Entities.Country", b =>
                 {
-                    b.Property<Guid>("Guid")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -224,34 +217,34 @@ namespace WorldCities.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Guid");
+                    b.HasKey("Id");
 
                     b.ToTable("Countries");
                 });
 
-            modelBuilder.Entity("WorldCities.Core.Domain.Entities.Like", b =>
+            modelBuilder.Entity("WorldCities.Domain.Entities.Like", b =>
                 {
-                    b.Property<Guid>("Guid")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CityGuid")
+                    b.Property<Guid>("CityId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserGuid")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Guid");
+                    b.HasKey("Id");
 
-                    b.HasIndex("UserGuid");
+                    b.HasIndex("UserId");
 
-                    b.HasIndex("CityGuid", "UserGuid")
+                    b.HasIndex("CityId", "UserId")
                         .IsUnique();
 
                     b.ToTable("Likes");
                 });
 
-            modelBuilder.Entity("WorldCities.Core.Identity.ApplicationRole", b =>
+            modelBuilder.Entity("WorldCities.Domain.Identity.ApplicationRole", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -279,7 +272,7 @@ namespace WorldCities.Infrastructure.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("WorldCities.Core.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("WorldCities.Domain.Identity.ApplicationUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -349,30 +342,15 @@ namespace WorldCities.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("ApplicationUserCity", b =>
-                {
-                    b.HasOne("WorldCities.Core.Domain.Entities.City", null)
-                        .WithMany()
-                        .HasForeignKey("CitiesGuid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WorldCities.Core.Identity.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ApplicationUserCountry", b =>
                 {
-                    b.HasOne("WorldCities.Core.Domain.Entities.Country", null)
+                    b.HasOne("WorldCities.Domain.Entities.Country", null)
                         .WithMany()
-                        .HasForeignKey("CountriesGuid")
+                        .HasForeignKey("CountriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WorldCities.Core.Identity.ApplicationUser", null)
+                    b.HasOne("WorldCities.Domain.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -381,7 +359,7 @@ namespace WorldCities.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("WorldCities.Core.Identity.ApplicationRole", null)
+                    b.HasOne("WorldCities.Domain.Identity.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -390,7 +368,7 @@ namespace WorldCities.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("WorldCities.Core.Identity.ApplicationUser", null)
+                    b.HasOne("WorldCities.Domain.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -399,7 +377,7 @@ namespace WorldCities.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("WorldCities.Core.Identity.ApplicationUser", null)
+                    b.HasOne("WorldCities.Domain.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -408,13 +386,13 @@ namespace WorldCities.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("WorldCities.Core.Identity.ApplicationRole", null)
+                    b.HasOne("WorldCities.Domain.Identity.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WorldCities.Core.Identity.ApplicationUser", null)
+                    b.HasOne("WorldCities.Domain.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -423,22 +401,26 @@ namespace WorldCities.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("WorldCities.Core.Identity.ApplicationUser", null)
+                    b.HasOne("WorldCities.Domain.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WorldCities.Core.Domain.Entities.City", b =>
+            modelBuilder.Entity("WorldCities.Domain.Entities.City", b =>
                 {
-                    b.HasOne("WorldCities.Core.Domain.Entities.CityImage", "CityImage")
-                        .WithMany()
-                        .HasForeignKey("CityImageGuid");
-
-                    b.HasOne("WorldCities.Core.Domain.Entities.Country", "Country")
+                    b.HasOne("WorldCities.Domain.Identity.ApplicationUser", null)
                         .WithMany("Cities")
-                        .HasForeignKey("CountryGuid")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("WorldCities.Domain.Entities.CityImage", "CityImage")
+                        .WithMany()
+                        .HasForeignKey("CityImageId");
+
+                    b.HasOne("WorldCities.Domain.Entities.Country", "Country")
+                        .WithMany("Cities")
+                        .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -447,28 +429,28 @@ namespace WorldCities.Infrastructure.Migrations
                     b.Navigation("Country");
                 });
 
-            modelBuilder.Entity("WorldCities.Core.Domain.Entities.CityImage", b =>
+            modelBuilder.Entity("WorldCities.Domain.Entities.CityImage", b =>
                 {
-                    b.HasOne("WorldCities.Core.Domain.Entities.City", "City")
+                    b.HasOne("WorldCities.Domain.Entities.City", "City")
                         .WithMany()
-                        .HasForeignKey("CityGuid")
+                        .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("City");
                 });
 
-            modelBuilder.Entity("WorldCities.Core.Domain.Entities.Like", b =>
+            modelBuilder.Entity("WorldCities.Domain.Entities.Like", b =>
                 {
-                    b.HasOne("WorldCities.Core.Domain.Entities.City", "City")
+                    b.HasOne("WorldCities.Domain.Entities.City", "City")
                         .WithMany("Likes")
-                        .HasForeignKey("CityGuid")
+                        .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WorldCities.Core.Identity.ApplicationUser", "ApplicationUser")
+                    b.HasOne("WorldCities.Domain.Identity.ApplicationUser", "ApplicationUser")
                         .WithMany("Likes")
-                        .HasForeignKey("UserGuid")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -477,18 +459,20 @@ namespace WorldCities.Infrastructure.Migrations
                     b.Navigation("City");
                 });
 
-            modelBuilder.Entity("WorldCities.Core.Domain.Entities.City", b =>
+            modelBuilder.Entity("WorldCities.Domain.Entities.City", b =>
                 {
                     b.Navigation("Likes");
                 });
 
-            modelBuilder.Entity("WorldCities.Core.Domain.Entities.Country", b =>
+            modelBuilder.Entity("WorldCities.Domain.Entities.Country", b =>
                 {
                     b.Navigation("Cities");
                 });
 
-            modelBuilder.Entity("WorldCities.Core.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("WorldCities.Domain.Identity.ApplicationUser", b =>
                 {
+                    b.Navigation("Cities");
+
                     b.Navigation("Likes");
                 });
 #pragma warning restore 612, 618

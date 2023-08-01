@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using WorldCities.Core.Commands.Users.Models;
 using WorldCities.Core.Interfaces.Repositories;
 using WorldCities.Core.Interfaces.Services;
+using WorldCities.Domain.Exceptions;
 using WorldCities.Domain.Identity;
 
 namespace WorldCities.Core.Commands.Users.LoginUser
@@ -34,7 +35,7 @@ namespace WorldCities.Core.Commands.Users.LoginUser
                 return JwtService.CreateJwtToken(user);
             }
 
-            throw new Exception("Wrong email or password");
+            throw new BadRequestException("Wrong email or password");
         }
     }
 }

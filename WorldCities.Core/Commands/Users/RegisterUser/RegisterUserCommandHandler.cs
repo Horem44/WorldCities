@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using WorldCities.Core.Commands.Users.Models;
 using WorldCities.Core.Interfaces.Repositories;
 using WorldCities.Core.Interfaces.Services;
+using WorldCities.Domain.Exceptions;
 using WorldCities.Domain.Identity;
 
 namespace WorldCities.Core.Commands.Users.RegisterUser
@@ -31,7 +32,7 @@ namespace WorldCities.Core.Commands.Users.RegisterUser
                 return JwtService.CreateJwtToken(user);
             }
 
-            throw new Exception(
+            throw new BadRequestException(
                 string.Join(" | ", identityResult.Errors.Select(e => e.Description))
             );
         }

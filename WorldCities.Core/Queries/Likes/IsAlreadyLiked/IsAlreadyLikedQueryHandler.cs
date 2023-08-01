@@ -1,12 +1,15 @@
 ﻿using MediatR;
 using System.Data.Entity;
+using WorldCities.Core.Interfaces.Accessors;
 using WorldCities.Core.Interfaces.Repositories;
 using WorldCities.Domain.Entities;
 
 namespace WorldCities.Core.Queries.Likes.IsAlreadyLiked
 {
-    public record IsAlreadyLikedQueryHandler(ILikeRepository LikeRepository)
-        : IRequestHandler<IsAlreadyLikedQuery, bool>
+    public record IsAlreadyLikedQueryHandler(
+        ILikeRepository LikeRepository,
+        IUserAccessor UserAccessor
+    ) : IRequestHandler<IsAlreadyLikedQuery, bool>
     {
         public async Task<bool> Handle(
             IsAlreadyLikedQuery request,
@@ -14,7 +17,7 @@ namespace WorldCities.Core.Queries.Likes.IsAlreadyLiked
         )
         {
             Like? existingLike = await LikeRepository
-                .GetByUserCityGuid(request.userId, request.cityId)
+                .GetByUserCityGuid(UserAccessor.Id(), request.CityId)
                 .FirstOrDefaultAsync(cancellationToken);
 
             return existingLike == null ? false : true;

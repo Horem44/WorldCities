@@ -1,29 +1,39 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using MediatR;
 using System.Data.Entity;
+using WorldCities.Core.IntegrationEvents.Likes.RemoveCityLike;
+using WorldCities.Core.Interfaces.Accessors;
+using WorldCities.Core.Interfaces.Events;
 using WorldCities.Core.Interfaces.Repositories;
 using WorldCities.Domain.Entities;
+using WorldCities.Domain.Exceptions;
 
 namespace WorldCities.Core.Commands.Likes.RemoveLike
 {
-    public record RemoveLikeCommandHandler(ILikeRepository LikeRepository)
-        : IRequestHandler<RemoveLikeCommand, Unit>
+    public record RemoveLikeCommandHandler(
+        ILikeRepository LikeRepository,
+        IUserAccessor UserAccessor,
+        IEventPublisher EventPublisher,
+        IMapper Mapper
+    ) : IRequestHandler<RemoveLikeCommand, Unit>
     {
         public async Task<Unit> Handle(
             RemoveLikeCommand request,
             CancellationToken cancellationToken
         )
         {
-            Like? likeToDelete = await LikeRepository
-                .GetByUserCityGuid(request.userId, request.cityId)
-                .FirstOrDefaultAsync(cancellationToken);
-
-            if (likeToDelete == null)
-            {
-                throw new BadHttpRequestException("Like not found", 404);
-            }
+            Like? likeToDelete =
+                await LikeRepository
+                    .GetByUserCityGuid(UserAccessor.Id(), request.CityId)
+                    .FirstOrDefaultAsync(cancellationToken)
+                ?? throw new NotFoundException("Like not found");
 
             await LikeRepository.Delete(likeToDelete, cancellationToken);
+
+            await EventPublisher.PublishAsync(
+                Mapper.Map<RemoveCityLikeEvent>(request),
+                cancellationToken
+            );
 
             return Unit.Value;
         }

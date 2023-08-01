@@ -5,10 +5,8 @@ using WorldCities.Core.Commands.Users.AuthorizeUser;
 using WorldCities.Core.Commands.Users.LoginUser;
 using WorldCities.Core.Commands.Users.Models;
 using WorldCities.Core.Commands.Users.RegisterUser;
-using WorldCities.Core.Queries.Users.IsEmailAlreadyExists;
 using WorldCities.Core.Queries.Users.LogoutUser;
 using WorldCities.Infrastructure.ActionFilters;
-using WorldCities.Infrastructure.ModelBinders;
 
 namespace WorldCities.Api.Controllers
 {
@@ -48,11 +46,9 @@ namespace WorldCities.Api.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Authorize(
-            [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userId
-        )
+        public async Task<IActionResult> Authorize()
         {
-            UserDto userDto = await _mediator.Send(new AuthorizeUserCommand(userId));
+            UserDto userDto = await _mediator.Send(new AuthorizeUserCommand());
             return new JsonResult(userDto);
         }
 
@@ -61,13 +57,6 @@ namespace WorldCities.Api.Controllers
         {
             await _mediator.Send(new LogoutUserQuery());
             return NoContent();
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> IsEmailAlreadyExists(string email)
-        {
-            bool isEmailAlreadyExists = await _mediator.Send(new IsEmailAlreadyExistsQuery(email));
-            return Ok(isEmailAlreadyExists);
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using WorldCities.Core.Commands.Users.Models;
 using WorldCities.Core.Interfaces.Services;
+using WorldCities.Domain.Constants;
 using WorldCities.Domain.Identity;
 
 namespace WorldCities.Core.Services
@@ -21,7 +22,7 @@ namespace WorldCities.Core.Services
         public UserDto CreateJwtToken(ApplicationUser user)
         {
             DateTime expiration = DateTime.UtcNow.AddMinutes(
-                Convert.ToDouble(_configuration["Jwt:EXPIRATION_MINUTES"])
+                Convert.ToDouble(_configuration[ConfigurationConstants.JWT_EXPIRATION_MINUTES])
             );
 
             Claim[] claims = new Claim[]
@@ -34,7 +35,7 @@ namespace WorldCities.Core.Services
             };
 
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!)
+                Encoding.UTF8.GetBytes(_configuration[ConfigurationConstants.JWT_KEY]!)
             );
 
             SigningCredentials signingCredentials = new SigningCredentials(
@@ -43,8 +44,8 @@ namespace WorldCities.Core.Services
             );
 
             JwtSecurityToken tokenGenerator = new JwtSecurityToken(
-                _configuration["Jwt:Issuer"],
-                _configuration["Jwt:Audience"],
+                _configuration[ConfigurationConstants.JWT_ISSUER],
+                _configuration[ConfigurationConstants.JWT_AUDIENCE],
                 claims,
                 expires: expiration,
                 signingCredentials: signingCredentials

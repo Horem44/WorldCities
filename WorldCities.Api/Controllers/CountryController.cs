@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WorldCities.Core.Commands.Countries.AddCountry;
 using WorldCities.Core.Queries.Countries.GetUserCountries;
-using WorldCities.Infrastructure.ModelBinders;
 
 namespace WorldCities.Api.Controllers
 {
@@ -20,15 +20,20 @@ namespace WorldCities.Api.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> GetUserCountries(
-            [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userId
-        )
+        public async Task<IActionResult> GetUserCountries()
         {
-            List<CountryDto> userCountries = await _mediator.Send(
-                new GetUserCountriesQuery(userId)
-            );
+            List<CountryDto> userCountries = await _mediator.Send(new GetUserCountriesQuery());
 
             return new JsonResult(userCountries);
+        }
+
+        [HttpPost]
+        [Route("")]
+        public async Task<IActionResult> AddCountry(AddCountryCommand command)
+        {
+            await _mediator.Send(command);
+
+            return Ok();
         }
     }
 }

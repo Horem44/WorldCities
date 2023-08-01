@@ -10,7 +10,8 @@ namespace WorldCities.Core.Commands.Cities.AddCity
             CreateMap<AddCityCommand, City>()
                 .ForMember(z => z.Lat, z => z.MapFrom(x => x.Lat))
                 .ForMember(z => z.Lon, z => z.MapFrom(x => x.Lon))
-                .ForMember(z => z.Name, z => z.MapFrom(x => x.Name));
+                .ForMember(z => z.Name, z => z.MapFrom(x => x.Name))
+                .ForMember(z => z.CountryId, z => z.MapFrom(x => x.CountryId));
         }
     }
 }

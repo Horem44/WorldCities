@@ -4,9 +4,10 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using WorldCities.Api.Middlewares;
-using WorldCities.Api.Options;
+using WorldCities.Core;
 using WorldCities.Core.Interfaces.Services;
 using WorldCities.Core.Services;
+using WorldCities.Domain.Constants;
 using WorldCities.Domain.Identity;
 using WorldCities.Infrastructure;
 using WorldCities.Infrastructure.ApplicationDatabaseContext;
@@ -39,7 +40,7 @@ builder.Services.AddSignalR();
 
 builder.Services.AddAppInfrastructure();
 
-builder.Services.AddHealthChecks().AddICMPHealthCheck(300, "127.0.0.1");
+builder.Services.AddAppCore();
 
 builder.Services
     .AddIdentity<ApplicationUser, ApplicationRole>(options =>
@@ -66,13 +67,15 @@ builder.Services
         options.TokenValidationParameters = new TokenValidationParameters()
         {
             ValidateAudience = true,
-            ValidAudience = builder.Configuration["Jwt:Audience"],
+            ValidAudience = builder.Configuration[ConfigurationConstants.JWT_AUDIENCE],
             ValidateIssuer = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidIssuer = builder.Configuration[ConfigurationConstants.JWT_ISSUER],
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(
-                System.Text.Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])
+                System.Text.Encoding.UTF8.GetBytes(
+                    builder.Configuration[ConfigurationConstants.JWT_KEY]!
+                )
             )
         };
     });
@@ -87,14 +90,12 @@ app.UseCors();
 
 app.MapControllers();
 
-app.MapHub<CityHub>("/api/city-hub");
-
-app.MapHub<HealthCheckHub>("/api/health-hub");
+app.MapHub<LikeHub>("/api/like-hub");
 
 app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.UseHealthChecks(new PathString("/api/health"), new JsonHealthCheckOptions());
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.Run();

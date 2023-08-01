@@ -22,7 +22,7 @@ namespace WorldCities.Infrastructure.ApplicationDatabaseContext
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Like>().HasIndex(l => new { l.CityGuid, l.UserGuid }).IsUnique();
+            modelBuilder.Entity<Like>().HasIndex(l => new { l.CityId, l.UserId }).IsUnique();
         }
     }
 }

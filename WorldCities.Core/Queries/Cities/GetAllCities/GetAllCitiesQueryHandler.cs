@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using WorldCities.Core.Interfaces.Repositories;
 using WorldCities.Core.Queries.Cities.Models;
 using WorldCities.Domain.Entities;
+using WorldCities.Domain.Exceptions;
 
 namespace WorldCities.Core.Queries.Cities.GetAllCities
 {
@@ -23,7 +24,7 @@ namespace WorldCities.Core.Queries.Cities.GetAllCities
 
             if (allCities == null)
             {
-                throw new Exception();
+                throw new NotFoundException("Cities not found");
             }
 
             return allCities.Select(Mapper.Map<CityDto>).ToList();

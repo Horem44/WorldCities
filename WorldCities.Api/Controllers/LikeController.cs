@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using WorldCities.Core.Commands.Likes.AddLike;
 using WorldCities.Core.Commands.Likes.RemoveLike;
 using WorldCities.Core.Queries.Likes.IsAlreadyLiked;
-using WorldCities.Infrastructure.ModelBinders;
 
 namespace WorldCities.Api.Controllers
 {
@@ -23,13 +22,12 @@ namespace WorldCities.Api.Controllers
         [Route("is-already-liked/{cityGuid:guid}")]
         [HttpGet]
         public async Task<IActionResult> IsCityAlreadyLiked(
-            [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userGuid,
             [FromRoute] Guid cityGuid,
             CancellationToken cancellationToken
         )
         {
             bool isExist = await _mediator.Send(
-                new IsAlreadyLikedQuery(userGuid, cityGuid),
+                new IsAlreadyLikedQuery(cityGuid),
                 cancellationToken
             );
 
@@ -38,7 +36,6 @@ namespace WorldCities.Api.Controllers
 
         [HttpPost]
         public async Task<IActionResult> AddLike(
-            [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userGuid,
             [FromBody] AddLikeCommand command,
             CancellationToken cancellationToken
         )
@@ -51,12 +48,11 @@ namespace WorldCities.Api.Controllers
         [Route("{cityId:guid}")]
         [HttpDelete]
         public async Task<IActionResult> RemoveLike(
-            [ModelBinder(typeof(JwtUserIdModelBinder))] Guid userId,
             [FromRoute] Guid cityId,
             CancellationToken cancellationToken
         )
         {
-            await _mediator.Send(new RemoveLikeCommand(userId, cityId), cancellationToken);
+            await _mediator.Send(new RemoveLikeCommand(cityId), cancellationToken);
 
             return Ok();
         }

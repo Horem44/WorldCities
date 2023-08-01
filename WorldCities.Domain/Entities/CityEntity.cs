@@ -29,11 +29,11 @@ namespace WorldCities.Domain.Entities
         [ForeignKey(nameof(CityImage))]
         public Guid? CityImageId { get; set; }
 
-        public virtual Country Country { get; set; } = new Country();
+        public virtual Country Country { get; set; }
 
-        public virtual CityImage CityImage { get; set; } = new CityImage();
+        public virtual CityImage CityImage { get; set; }
 
-        public virtual ICollection<Like> Likes { get; set; } = new List<Like>();
+        public virtual ICollection<Like> Likes { get; set; }
 
         [ForeignKey(nameof(ApplicationUser))]
         public virtual Guid? UserId { get; set; }

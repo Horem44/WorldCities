@@ -1,14 +1,15 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using WorldCities.Core.Commands.Users.Models;
-using WorldCities.Core.Interfaces.Repositories;
+using WorldCities.Core.Interfaces.Accessors;
 using WorldCities.Core.Interfaces.Services;
+using WorldCities.Domain.Exceptions;
 using WorldCities.Domain.Identity;
 
 namespace WorldCities.Core.Commands.Users.AuthorizeUser
 {
     public record AuthorizeUserCommandHandler(
-        IUserRepository UserRepository,
+        IUserAccessor UserAccessor,
         SignInManager<ApplicationUser> SignInManager,
         IJwtService JwtService
     ) : IRequestHandler<AuthorizeUserCommand, UserDto>
@@ -18,11 +19,11 @@ namespace WorldCities.Core.Commands.Users.AuthorizeUser
             CancellationToken cancellationToken
         )
         {
-            ApplicationUser? user = await UserRepository.FindById(request.UserId.ToString());
+            ApplicationUser? user = await UserAccessor.User();
 
             if (user == null)
             {
-                throw new Exception();
+                throw new NotFoundException("User not found");
             }
 
             await SignInManager.SignInAsync(user, isPersistent: false);

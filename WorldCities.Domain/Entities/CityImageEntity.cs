@@ -15,6 +15,6 @@ namespace WorldCities.Domain.Entities
         [ForeignKey(nameof(City))]
         public Guid CityId { get; set; }
 
-        public virtual City City { get; set; } = new City();
+        public virtual City City { get; set; }
     }
 }

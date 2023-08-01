@@ -12,11 +12,11 @@ namespace WorldCities.Domain.Entities
         public Guid Id { get; set; }
 
         [ForeignKey(nameof(City))]
-        public Guid CityGuid { get; set; }
+        public Guid CityId { get; set; }
 
         [ForeignKey(nameof(ApplicationUser))]
-        public Guid UserGuid { get; set; }
-        public virtual City City { get; set; } = new City();
-        public virtual ApplicationUser ApplicationUser { get; set; } = new ApplicationUser();
+        public Guid UserId { get; set; }
+        public virtual City City { get; set; }
+        public virtual ApplicationUser ApplicationUser { get; set; }
     }
 }

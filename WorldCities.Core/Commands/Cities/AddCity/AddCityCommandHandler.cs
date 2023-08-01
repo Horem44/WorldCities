@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
-using WorldCities.Core.Events.Cities.AddCityImageForCreatedCity;
-using WorldCities.Core.Events.Cities.AddCountryForCreatedCity;
-using WorldCities.Core.Events.Users.UpdateUserCities;
-using WorldCities.Core.Interfaces.DomainEvents;
+using WorldCities.Core.DomainEvents.Cities.AddCityImageForCreatedCity;
+using WorldCities.Core.DomainEvents.Users.UpdateUserCities;
+using WorldCities.Core.Interfaces.Events;
 using WorldCities.Core.Interfaces.Repositories;
 using WorldCities.Domain.Entities;
 
@@ -13,7 +12,7 @@ namespace WorldCities.Core.Commands.Cities.AddCity
         ICountryRepository CountryRepository,
         ICityRepository CityRepository,
         IMapper Mapper,
-        IDomainEventPublisher DomainEventPublisher
+        IEventPublisher DomainEventPublisher
     ) : IRequestHandler<AddCityCommand, Unit>
     {
         public async Task<Unit> Handle(AddCityCommand request, CancellationToken cancellationToken)
@@ -21,17 +20,12 @@ namespace WorldCities.Core.Commands.Cities.AddCity
             City city = await CityRepository.Add(Mapper.Map<City>(request), cancellationToken);
 
             await DomainEventPublisher.PublishAsync(
-                new AddCountryForCreatedCityEvent(request.CountryName, request.UserId),
-                cancellationToken
-            );
-
-            await DomainEventPublisher.PublishAsync(
                 new AddCityImageForCreatedCityEvent(request.Image, city.Id),
                 cancellationToken
             );
 
             await DomainEventPublisher.PublishAsync(
-                new UpdateUserCitiesEvent(request.UserId, city.Id),
+                new UpdateUserCitiesEvent(city.Id),
                 cancellationToken
             );
 
