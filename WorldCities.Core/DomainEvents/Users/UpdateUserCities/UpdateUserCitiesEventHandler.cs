@@ -22,18 +22,13 @@ namespace WorldCities.Core.DomainEvents.Users.UpdateUserCities
         {
             ApplicationUser user = await UserAccessor.User();
 
-            City? city = await CityRepository
-                .Get(notification.CityId)
-                .FirstOrDefaultAsync(cancellationToken);
-
-            if (city == null)
-            {
-                throw new NotFoundException("City not found");
-            }
-
-            user.Cities.Add(city);
+            user.Cities.Add(notification.City);
 
             await UserRepository.Update(user);
+
+            notification.City.UserId = user.Id;
+
+            await CityRepository.SaveChanges();
         }
     }
 };

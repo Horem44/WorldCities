@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using WorldCities.Core.DomainEvents.Users.UpdateUserCountries;
 using WorldCities.Core.Interfaces.Repositories;
 using WorldCities.Domain.Entities;
 
@@ -29,9 +30,9 @@ namespace WorldCities.Core.Commands.Countries.AddCountry
                     Mapper.Map<Country>(request),
                     cancellationToken
                 );
-            }
 
-            /*await Mediator.Publish(new UpdateUserCountriesEvent(request.UserId, country.Id));*/
+                await Mediator.Publish(new UpdateUserCountriesEvent(country));
+            }
 
             return country.Id;
         }

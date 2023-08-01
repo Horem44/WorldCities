@@ -38,5 +38,10 @@ namespace WorldCities.Infrastructure.Repositories
             _dbSet.Remove(entity);
             await _db.SaveChangesAsync(cancellationToken);
         }
+
+        public async Task SaveChanges()
+        {
+            await _db.SaveChangesAsync();
+        }
     }
 }

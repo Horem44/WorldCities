@@ -8,7 +8,7 @@ namespace WorldCities.Core.DomainEvents.Cities.AddCityImageForCreatedCity
         public AddCityImageForCreatedCityMapping()
         {
             CreateMap<AddCityImageForCreatedCityEvent, CityImage>()
-                .ForMember(z => z.CityId, z => z.MapFrom(x => x.CityId))
+                .ForMember(z => z.CityId, z => z.MapFrom(x => x.City.Id))
                 .ForMember(z => z.FileName, z => z.MapFrom(x => x.Image.FileName))
                 .ForMember(z => z.ContentType, z => z.MapFrom(x => x.Image.ContentType));
         }

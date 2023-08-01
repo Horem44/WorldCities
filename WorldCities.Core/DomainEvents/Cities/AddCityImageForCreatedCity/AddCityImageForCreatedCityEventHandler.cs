@@ -29,7 +29,11 @@ namespace WorldCities.Core.DomainEvents.Cities.AddCityImageForCreatedCity
                 imageEntity.FileData = memoryStream.ToArray();
             }
 
-            await CityImageRepository.Add(imageEntity, cancellationToken);
+            CityImage cityImage = await CityImageRepository.Add(imageEntity, cancellationToken);
+
+            notification.City.CityImageId = cityImage.Id;
+
+            await CityImageRepository.SaveChanges();
         }
     }
 }

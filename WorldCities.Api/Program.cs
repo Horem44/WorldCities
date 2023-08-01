@@ -96,6 +96,6 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.UseMiddleware<ExceptionHandlerMiddleware>();
+/*app.UseMiddleware<ExceptionHandlerMiddleware>();*/
 
 app.Run();

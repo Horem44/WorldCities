@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using WorldCities.Core.IntegrationEvents.Likes.RemoveCityLike;
 using WorldCities.Core.Interfaces.Accessors;
 using WorldCities.Core.Interfaces.Events;

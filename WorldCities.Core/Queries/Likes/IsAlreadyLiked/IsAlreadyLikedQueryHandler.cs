@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using WorldCities.Core.Interfaces.Accessors;
 using WorldCities.Core.Interfaces.Repositories;
 using WorldCities.Domain.Entities;

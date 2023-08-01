@@ -21,17 +21,11 @@ namespace WorldCities.Core.DomainEvents.Users.UpdateUserCountries
         {
             ApplicationUser user = await UserAccessor.User();
 
-            Country? country = await CountryRepository
-                .Get(notification.CountryId)
-                .FirstOrDefaultAsync(cancellationToken);
-
-            if (country == null)
-            {
-                throw new NotFoundException("Country not found");
-            }
-
-            user.Countries.Add(country);
+            user.Countries.Add(notification.Country);
             await UserRepository.Update(user);
+
+            notification.Country.Users.Add(user);
+            await CountryRepository.SaveChanges();
         }
     }
 }

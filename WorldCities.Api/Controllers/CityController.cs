@@ -60,7 +60,6 @@ namespace WorldCities.Api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         [Route("{countryId:guid}")]
         public async Task<IActionResult> GetCountryCities(
             [FromRoute] Guid countryId,
@@ -76,6 +75,7 @@ namespace WorldCities.Api.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("image/{id:guid}")]
         public async Task<IActionResult> GetCityImage(
             [FromRoute] Guid id,

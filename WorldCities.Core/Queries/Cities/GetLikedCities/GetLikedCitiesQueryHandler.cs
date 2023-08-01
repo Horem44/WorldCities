@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using WorldCities.Core.Interfaces.Accessors;
 using WorldCities.Core.Interfaces.Repositories;
 using WorldCities.Core.Queries.Cities.Models;
@@ -24,6 +24,8 @@ namespace WorldCities.Core.Queries.Cities.GetLikedCities
 
             List<City>? likedCities = await CityRepository
                 .Get(c => c.Likes.Any(l => l.UserId == user.Id))
+                .Include(c => c.Likes)
+                .Include(c => c.Country)
                 .ToListAsync(cancellationToken);
 
             return likedCities.Select(Mapper.Map<CityDto>).ToList();

@@ -2,6 +2,7 @@
 {
     public interface ILikeHubClientService
     {
-        Task SendMessage(string message, Guid id, CancellationToken cancellationToken);
+        Task IncreaseCityLikes(Guid id, CancellationToken cancellationToken);
+        Task DecreaseCityLikes(Guid id, CancellationToken cancellationToken);
     }
 }

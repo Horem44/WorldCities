@@ -28,7 +28,7 @@ namespace WorldCities.Api.Middlewares
         private static Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             HttpStatusCode statusCode = HttpStatusCode.InternalServerError;
-            String errorMessage = "An error occurred while processing your request.";
+            string errorMessage = "An error occurred while processing your request.";
 
             if (exception is BaseError baseError)
             {

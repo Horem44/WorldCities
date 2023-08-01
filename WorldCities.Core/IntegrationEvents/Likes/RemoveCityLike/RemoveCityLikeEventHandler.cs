@@ -12,11 +12,7 @@ namespace WorldCities.Core.IntegrationEvents.Likes.RemoveCityLike
             CancellationToken cancellationToken
         )
         {
-            await LikeHubClientService.SendMessage(
-                SignalRLikeMessageConstants.INCREASE_CITY_LIKES,
-                notification.CityId,
-                cancellationToken
-            );
+            await LikeHubClientService.DecreaseCityLikes(notification.CityId, cancellationToken);
         }
     }
 }

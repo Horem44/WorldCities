@@ -20,12 +20,12 @@ namespace WorldCities.Core.Commands.Cities.AddCity
             City city = await CityRepository.Add(Mapper.Map<City>(request), cancellationToken);
 
             await DomainEventPublisher.PublishAsync(
-                new AddCityImageForCreatedCityEvent(request.Image, city.Id),
+                new AddCityImageForCreatedCityEvent(request.Image, city),
                 cancellationToken
             );
 
             await DomainEventPublisher.PublishAsync(
-                new UpdateUserCitiesEvent(city.Id),
+                new UpdateUserCitiesEvent(city),
                 cancellationToken
             );
 

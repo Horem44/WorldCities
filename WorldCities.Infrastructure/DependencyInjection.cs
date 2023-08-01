@@ -1,14 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using WorldCities.Core.Commands.Cities.AddCity;
 using WorldCities.Core.Interfaces.Events;
-using WorldCities.Core.Interfaces.Hubs;
 using WorldCities.Core.Interfaces.Repositories;
 using WorldCities.Core.Interfaces.Services;
-using WorldCities.Infrastructure.ApplicationDatabaseContext;
 using WorldCities.Infrastructure.Repositories;
 using WorldCities.Infrastructure.Services;
 

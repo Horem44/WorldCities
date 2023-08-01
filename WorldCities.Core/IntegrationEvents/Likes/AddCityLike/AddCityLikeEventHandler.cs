@@ -9,11 +9,7 @@ namespace WorldCities.Core.IntegrationEvents.Likes.AddLike
     {
         public async Task Handle(AddCityLikeEvent notification, CancellationToken cancellationToken)
         {
-            await LikeHubClientService.SendMessage(
-                SignalRLikeMessageConstants.DECREASE_CITY_LIKES,
-                notification.CityId,
-                cancellationToken
-            );
+            await LikeHubClientService.IncreaseCityLikes(notification.CityId, cancellationToken);
         }
     }
 }

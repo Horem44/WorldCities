@@ -31,9 +31,9 @@ namespace WorldCities.Api.Controllers
         [Route("")]
         public async Task<IActionResult> AddCountry(AddCountryCommand command)
         {
-            await _mediator.Send(command);
+            Guid countryId = await _mediator.Send(command);
 
-            return Ok();
+            return Ok(countryId);
         }
     }
 }
