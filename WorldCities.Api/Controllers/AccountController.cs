@@ -1,12 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WorldCities.Api.ActionFilters;
 using WorldCities.Core.Commands.Users.AuthorizeUser;
 using WorldCities.Core.Commands.Users.LoginUser;
 using WorldCities.Core.Commands.Users.Models;
 using WorldCities.Core.Commands.Users.RegisterUser;
 using WorldCities.Core.Queries.Users.LogoutUser;
-using WorldCities.Infrastructure.ActionFilters;
 
 namespace WorldCities.Api.Controllers
 {
